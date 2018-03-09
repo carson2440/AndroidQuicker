@@ -1,0 +1,27 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="startMode"
+            type="com.carson.androidquicker.vo.StartMode" />
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/start_message"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginBottom="6dp"
+            android:gravity="center"
+            android:minHeight="66dp"
+            android:onClick="messageClick"
+            android:text="@{startMode.message}"
+            android:textColor="@color/colorAccent" />
+
+    </FrameLayout>
+</layout>
