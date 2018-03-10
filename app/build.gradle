@@ -1,10 +1,10 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion rootProject.ext.SDK_VERSION
+    compileSdkVersion SDK_VERSION
     defaultConfig {
         applicationId "com.carson.androidquicker"
-        minSdkVersion 15
+        minSdkVersion MIN_VERSION
         targetSdkVersion rootProject.ext.SDK_VERSION
         versionCode 1
         versionName "1.0"
@@ -31,15 +31,14 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-//    implementation "com.android.support:appcompat-v7:${SUPPORT_VERSION}"
+    //    implementation "com.android.support:appcompat-v7:${SUPPORT_VERSION}"
     implementation getRootProject().ext.dependencies.appcompat_v7
     implementation getRootProject().ext.dependencies.design
     implementation "com.android.support:recyclerview-v7:${SUPPORT_VERSION}"
     api project(':quicker')
-
 }
