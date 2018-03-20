@@ -18,19 +18,19 @@ public class QExecutors {
     }
 
     private final Executor mDiskIO;
-    private final Executor mMainThread;
+    private final MainThreadExecutor mMainThread;
 
     private QExecutors() {
         this(Executors.newSingleThreadExecutor(), new MainThreadExecutor());
     }
 
-    private QExecutors(Executor diskIO, Executor mainThread) {
+    private QExecutors(Executor diskIO, MainThreadExecutor mainThread) {
         this.mDiskIO = diskIO;
         this.mMainThread = mainThread;
     }
 
 
-    public static final QExecutors builder() {
+    public static final QExecutors init() {
         return QExecutorsHandler.instance;
     }
 
@@ -39,7 +39,7 @@ public class QExecutors {
         return mDiskIO;
     }
 
-    public Executor threadMain() {
+    public MainThreadExecutor threadMain() {
         return mMainThread;
     }
 
@@ -49,6 +49,10 @@ public class QExecutors {
         @Override
         public void execute(@NonNull Runnable command) {
             mainThreadHandler.post(command);
+        }
+
+        public void executeDelayed(@NonNull Runnable command, int delayMillis) {
+            mainThreadHandler.postDelayed(command, delayMillis);
         }
     }
 }

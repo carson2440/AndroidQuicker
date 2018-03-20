@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.view.View;
 
 import com.carson.androidquicker.QuickerActivity;
 import com.carson.androidquicker.R;
@@ -16,10 +17,13 @@ import com.carson.quicker.utils.QAndroid;
 import com.carson.quicker.utils.QStorages;
 
 import java.math.BigInteger;
-import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by carson on 2018/3/9.
@@ -27,7 +31,6 @@ import io.reactivex.disposables.Disposable;
 
 public class StartActivity extends QuickerActivity {
     ActivityStartBinding binding;
-    Disposable disposable;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,7 +43,7 @@ public class StartActivity extends QuickerActivity {
         }
         boolean result = QStorages.hasSDCardAndPermission(this, 001);
         QLogger.debug("has sdcard permission:" + result);
-        QExecutors.builder().threadIO().execute(new Runnable() {
+        QExecutors.init().threadIO().execute(new Runnable() {
             @Override
             public void run() {
                 QLogger.error(new BigInteger(String.valueOf(QAndroid.getDexCrc32(StartActivity.this))).toString(16));
@@ -53,15 +56,38 @@ public class StartActivity extends QuickerActivity {
          /*dataBinding 不能绑定空对象,否则不能同步数据,可以多次绑定数据，可以直接绑定一个ViewModel*/
         binding.setStartMode(viewMode);
 
-        disposable = Observable.interval(1,1, TimeUnit.SECONDS).subscribe(aLong -> viewMode.message.set("ticks:" + aLong));
+        Observable.create((ObservableOnSubscribe<Integer>) emitter -> {
+            for (int i = 0; i < 3; i++) {
+                emitter.onNext(i);
+                Thread.currentThread().sleep(1200);
+            }
+            emitter.onComplete();
+        }).subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<Integer>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(Integer integer) {
+                        viewMode.message.set("Now :" + integer);
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        finish();
+                    }
+                });
     }
 
+    public void messageClick(View view) {
 
-    @Override
-    protected void onDestroy() {
-        if (disposable != null && !disposable.isDisposed()) {
-            disposable.dispose();
-        }
-        super.onDestroy();
     }
 }

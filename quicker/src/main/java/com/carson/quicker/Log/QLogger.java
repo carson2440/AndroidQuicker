@@ -14,7 +14,7 @@ public class QLogger {
     private static final String APP_TAG = "Quicker";
     private static boolean canPrintLog = false;
 
-    public static void enable(boolean debug) {
+    public static void init(boolean debug) {
         canPrintLog = debug;
     }
 

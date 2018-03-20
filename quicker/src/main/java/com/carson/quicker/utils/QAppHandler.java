@@ -34,7 +34,7 @@ public class QAppHandler implements Thread.UncaughtExceptionHandler {
     public void create() {
         defaultHandler = Thread.getDefaultUncaughtExceptionHandler();
         Thread.setDefaultUncaughtExceptionHandler(this);
-        QExecutors.builder().threadIO().execute(new Runnable() {
+        QExecutors.init().threadIO().execute(new Runnable() {
             @Override
             public void run() {
                 crashLogPath = QStorages.getCacheDir(application, "log");

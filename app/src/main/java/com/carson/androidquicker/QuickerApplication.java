@@ -29,7 +29,7 @@ public class QuickerApplication extends Application {
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         QAppHandler.with(this).create();
         QAndroid.enableStrictMode(this);
-        QLogger.enable(BuildConfig.DEBUG);
+        QLogger.init(BuildConfig.DEBUG);
         initHttpSocket();
     }
 
