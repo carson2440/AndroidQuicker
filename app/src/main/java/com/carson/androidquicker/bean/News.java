@@ -5,6 +5,8 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 /**
  * Created by carson on 2018/3/9.
  */
@@ -15,8 +17,8 @@ public class News implements Parcelable {
     @SerializedName("ga_prefix")
     private String prefix;
     private String title;
-    //    private List<String> images;
-    private String images;
+        private List<String> images;
+//    private String images;
     private boolean isRead = false;
     private String date;
 
@@ -60,11 +62,11 @@ public class News implements Parcelable {
         this.title = title;
     }
 
-    public String getImages() {
+    public List<String> getImages() {
         return images;
     }
 
-    public void setImages(String images) {
+    public void setImages(List<String> images) {
         this.images = images;
     }
 
@@ -87,7 +89,8 @@ public class News implements Parcelable {
         dest.writeInt(this.id);
         dest.writeString(this.prefix);
         dest.writeString(this.title);
-        dest.writeString(this.images);
+//        dest.writeString(this.images);
+        dest.writeList(this.images);
         dest.writeByte(isRead ? (byte) 1 : (byte) 0);
     }
 
@@ -99,7 +102,7 @@ public class News implements Parcelable {
         this.id = in.readInt();
         this.prefix = in.readString();
         this.title = in.readString();
-        this.images = in.readString();
+//        this.images = in.rea;
         this.isRead = in.readByte() != 0;
     }
 

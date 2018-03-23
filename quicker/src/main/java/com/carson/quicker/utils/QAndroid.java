@@ -12,7 +12,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.StrictMode;
 import android.telephony.TelephonyManager;
-import android.text.TextUtils;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -42,30 +41,29 @@ public class QAndroid {
     public static void enableStrictMode(Context context) {
         if (isDebug(context)) {
              /* 严苛模式*/
-            StrictMode.ThreadPolicy.Builder threadPolicyBuilder = new StrictMode.ThreadPolicy.Builder().detectAll()
-                    .penaltyLog();
+            StrictMode.ThreadPolicy.Builder threadPolicyBuilder = new StrictMode.ThreadPolicy.Builder().detectAll();
             if (Build.VERSION.SDK_INT >= 11) {
-                threadPolicyBuilder = threadPolicyBuilder.penaltyDeath();
+                threadPolicyBuilder = threadPolicyBuilder.penaltyLog().penaltyDialog().penaltyFlashScreen();
                 // vmPolicyBuilder.setClassInstanceLimit(ImageGridActivity.class,
                 // 1).setClassInstanceLimit(ImageDetailActivity.class, 1);
             }
             StrictMode.setThreadPolicy(threadPolicyBuilder.build());
 
-//            StrictMode.VmPolicy.Builder vmPolicyBuilder = new StrictMode.VmPolicy.Builder().detectAll().penaltyLog();
-            StrictMode.VmPolicy.Builder vmPolicyBuilder = new StrictMode.VmPolicy.Builder().detectLeakedSqlLiteObjects().detectLeakedClosableObjects();
-
-            int targetSdk = Build.VERSION.SDK_INT;
-            if (targetSdk >= Build.VERSION_CODES.JELLY_BEAN) {
-                vmPolicyBuilder = vmPolicyBuilder.detectLeakedRegistrationObjects();
-            }
-            if (targetSdk >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-                vmPolicyBuilder = vmPolicyBuilder.detectFileUriExposure();
-            }
-            if (targetSdk >= Build.VERSION_CODES.O) {
-                vmPolicyBuilder = vmPolicyBuilder.detectUntaggedSockets().detectContentUriWithoutPermission();
-            }
+            StrictMode.VmPolicy.Builder vmPolicyBuilder = new StrictMode.VmPolicy.Builder().detectAll();
+//            StrictMode.VmPolicy.Builder vmPolicyBuilder = new StrictMode.VmPolicy.Builder().detectLeakedSqlLiteObjects().detectLeakedClosableObjects();
+//
+//            int targetSdk = Build.VERSION.SDK_INT;
+//            if (targetSdk >= Build.VERSION_CODES.JELLY_BEAN) {
+//                vmPolicyBuilder = vmPolicyBuilder.detectLeakedRegistrationObjects();
+//            }
+//            if (targetSdk >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+//                vmPolicyBuilder = vmPolicyBuilder.detectFileUriExposure();
+//            }
+//            if (targetSdk >= Build.VERSION_CODES.O) {
+//                vmPolicyBuilder = vmPolicyBuilder.detectUntaggedSockets().detectContentUriWithoutPermission();
+//            }
             //例如使用penaltyDeath()的话，一旦StrictMode消息被写到LogCat后应用就会崩溃
-            StrictMode.setVmPolicy(vmPolicyBuilder.penaltyLog().penaltyDeath().build());
+            StrictMode.setVmPolicy(vmPolicyBuilder.penaltyLog().build());
         }
 
     }

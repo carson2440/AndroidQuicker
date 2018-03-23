@@ -20,7 +20,7 @@ import okhttp3.Cache;
  */
 
 public class QuickerApplication extends Application {
-    public DataSource dataSource;
+    public static DataSource dataSource;
 
     @Override
     public void onCreate() {

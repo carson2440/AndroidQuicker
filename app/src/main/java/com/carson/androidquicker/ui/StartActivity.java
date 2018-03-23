@@ -39,16 +39,26 @@ public class StartActivity extends QuickerActivity {
             return;
         }
 
+        boolean result = QStorages.hasSDCardAndPermission(this, 001);
+        QLogger.debug("has sdcard permission:" + result);
+        QExecutors.init().threadIO().execute(() -> QLogger.debug("CRC32:" + QAndroid.getDexCrc32(StartActivity.this)));
+
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_start);
         StartMode viewMode = ViewModelProviders.of(this).get(StartMode.class);
         viewMode.message.set("Hi,welcome to AndroidQuicker!" + QAndroid.isNotificationEnabled(this));
          /*dataBinding 不能绑定空对象,否则不能同步数据,可以多次绑定数据，可以直接绑定一个ViewModel*/
         binding.setStartMode(viewMode);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
 
         Observable.create((ObservableOnSubscribe<Integer>) emitter -> {
-            for (int i = 0; i < 5; i++) {
-                Thread.currentThread().sleep(1200);
+            for (int i = 4; i >= 0; i--) {
                 emitter.onNext(i);
+                Thread.currentThread().sleep(1200);
             }
             emitter.onComplete();
         }).subscribeOn(Schedulers.computation())
@@ -61,8 +71,7 @@ public class StartActivity extends QuickerActivity {
 
                     @Override
                     public void onNext(Integer integer) {
-                        viewMode.message.set("Now :" + integer);
-                        viewMode.skip.set("skip(" + integer + ")");
+                        binding.getStartMode().skip.set("跳过(" + integer + ")");
                     }
 
                     @Override
@@ -72,27 +81,12 @@ public class StartActivity extends QuickerActivity {
 
                     @Override
                     public void onComplete() {
-                        startActivity(new Intent(StartActivity.this, HomeActivity.class));
-                        finish();
+                        startActivity(HomeActivity.class, true);
                     }
                 });
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        boolean result = QStorages.hasSDCardAndPermission(this, 001);
-        QLogger.debug("has sdcard permission:" + result);
-        QExecutors.init().threadIO().execute(() -> QLogger.debug("CRC32:" + QAndroid.getDexCrc32(StartActivity.this)));
-    }
-
     public void messageClick(View view) {
-
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
 
     }
 }
