@@ -17,7 +17,7 @@ import android.view.View;
  * may be CIRCLE and RECTANGLE
  */
 @UiThread
-public class ShapIndicator extends View implements ViewPager.OnPageChangeListener {
+public class QShapIndicator extends View implements ViewPager.OnPageChangeListener {
 
     public static final int CIRCLE = 0;
     public static final int SQUARE = 1;
@@ -39,11 +39,11 @@ public class ShapIndicator extends View implements ViewPager.OnPageChangeListene
     private ViewPager viewPager;
     PaintFlagsDrawFilter filterPaint;
 
-    public ShapIndicator(Context context) {
+    public QShapIndicator(Context context) {
         this(context, null);
     }
 
-    public ShapIndicator(Context context, AttributeSet attrs) {
+    public QShapIndicator(Context context, AttributeSet attrs) {
         super(context, attrs);
         fillPaint.setAntiAlias(true);
         fillPaint.setStyle(Paint.Style.FILL);
@@ -110,7 +110,7 @@ public class ShapIndicator extends View implements ViewPager.OnPageChangeListene
                 // active and previously active one
                 activeRadius = (float) valueAnimator.getAnimatedValue();
                 previousRadius = (constantRadius * SELECTED_FACTOR) - (activeRadius - constantRadius);
-                ShapIndicator.this.invalidate();
+                invalidate();
             }
         });
         animation.start();
