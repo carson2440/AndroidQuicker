@@ -6,7 +6,7 @@ android {
         minSdkVersion MIN_VERSION
         targetSdkVersion SDK_VERSION
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
@@ -24,20 +24,21 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-    implementation getRootProject().ext.dependencies.appcompat_v7
-
-    // arch.lifecycle
-//    compile "android.arch.lifecycle:runtime:${ARCH_VERSION}"
-    compile "android.arch.lifecycle:extensions:${ARCH_VERSION}"
-    compile "android.arch.lifecycle:common-java8:${ARCH_VERSION}"
-    annotationProcessor "android.arch.lifecycle:compiler:${ARCH_VERSION}"
+    compileOnly getRootProject().ext.dependencies.appcompat_v7
+    compileOnly "com.android.support:recyclerview-v7:${SUPPORT_VERSION}"
 
     //Retrofit requires at minimum Java 7 or Android 2.3
-    compile "com.squareup.retrofit2:converter-gson:${RETROFIT2_VERSION}"
-    compile "com.squareup.retrofit2:retrofit:${RETROFIT2_VERSION}"
-    compile "com.squareup.retrofit2:adapter-rxjava2:${RETROFIT2_VERSION}"
+    api "com.squareup.retrofit2:converter-gson:${RETROFIT2_VERSION}"
+    api "com.squareup.retrofit2:retrofit:${RETROFIT2_VERSION}"
+    api "com.squareup.retrofit2:adapter-rxjava2:${RETROFIT2_VERSION}"
 
     //Rxjava RxAndroid
-    compile 'io.reactivex.rxjava2:rxjava:2.1.7'
-    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+//    api 'io.reactivex.rxjava2:rxjava:2.1.7'
+//    api 'io.reactivex.rxjava2:rxandroid:2.0.1'
+
+    // arch.lifecycle
+//    implementation "android.arch.lifecycle:runtime:${ARCH_VERSION}"
+    api "android.arch.lifecycle:extensions:${ARCH_VERSION}"
+    api "android.arch.lifecycle:common-java8:${ARCH_VERSION}"
+    annotationProcessor "android.arch.lifecycle:compiler:${ARCH_VERSION}"
 }

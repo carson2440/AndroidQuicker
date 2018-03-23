@@ -1,6 +1,7 @@
 package com.carson.quicker.utils;
 
 import android.annotation.SuppressLint;
+import android.app.AppOpsManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -11,8 +12,15 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.StrictMode;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
@@ -98,17 +106,41 @@ public class QAndroid {
     }
 
     //建议将dexCrc值放在服务器做校验,用crc32对classes.dex文件的完整性进行校验
-    public static long getDexCrc32(Context context) {
+    public static String getDexCrc32(Context context) {
         try {
             ZipFile zipfile = new ZipFile(context.getPackageCodePath());
             ZipEntry dexentry = zipfile.getEntry("classes.dex");
             zipfile.close();
-            return dexentry.getCrc();
+            return Long.toHexString(dexentry.getCrc());
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return -1L;
+        return QStrings.EMPTY;
     }
+
+    /**
+     * useage:
+     * 1.getUnixTime()
+     * 2.getUnixTime("MM/dd HH:mm:ss")
+     * 3.getUnixTime(String.valueOf(System.currentTimeMillis()),"MM/dd HH:mm:ss")
+     */
+    public static String getUnixTime(String... text) {
+        String formater = "yyyy/MM/dd HH:mm:ss";
+        Date date = new Date(System.currentTimeMillis());
+        if (text.length > 0) {
+            if (QStrings.isDigits(text[0])) {
+                date.setTime(Long.parseLong(text[0]));
+                if (text.length > 1) {
+                    formater = text[0];
+                }
+            } else {
+                formater = text[0];
+            }
+        }
+        SimpleDateFormat format = new java.text.SimpleDateFormat(formater, Locale.CHINA);
+        return format.format(date);
+    }
+
 
     /**
      * android.permission.ACCESS_NETWORK_STATE,(Allows applications to access information about networks)
@@ -189,5 +221,43 @@ public class QAndroid {
             e.printStackTrace();
         }
         return versionCode;
+    }
+
+    /**
+     * 检测APP是否开启通知显示，作用于APP内。
+     */
+    public static boolean isNotificationEnabled(Context context) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
+            return true;
+        } else {
+            AppOpsManager mAppOps = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
+            ApplicationInfo appInfo = context.getApplicationInfo();
+            String pkg = context.getApplicationContext().getPackageName();
+            int uid = appInfo.uid;
+
+            Class appOpsClass = null;
+             /* Context.APP_OPS_MANAGER */
+            try {
+                appOpsClass = Class.forName(AppOpsManager.class.getName());
+                Method checkOpNoThrowMethod = appOpsClass.getMethod("checkOpNoThrow", Integer.TYPE, Integer.TYPE,
+                        String.class);
+                Field opPostNotificationValue = appOpsClass.getDeclaredField("OP_POST_NOTIFICATION");
+
+                int value = (Integer) opPostNotificationValue.get(Integer.class);
+                return ((Integer) checkOpNoThrowMethod.invoke(mAppOps, value, uid, pkg) == AppOpsManager.MODE_ALLOWED);
+
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (NoSuchMethodException e) {
+                e.printStackTrace();
+            } catch (NoSuchFieldException e) {
+                e.printStackTrace();
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+            return false;
+        }
     }
 }

@@ -1,6 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">@color/app_bar</color>
+    <color name="colorPrimaryDark">@color/app_bar</color>
+    <color name="colorAccent">#57ABF4</color>
+    <color name="app_bar">#34373d</color>
+    <color name="window_bg">#F4F4F4</color>
+
+    <color name="button_color">#57ABF4</color>
+    //浅灰(166,166,166)
+    <color name="gray_light">#A6A6A6</color>
+    <color name="gray_dark">#666666</color>
+
+    <color name="font_white">#FFFF</color>
+    <color name="font_black">#000</color>
+    <color name="font_red">#F54A46</color>
+    <color name="black_floating">#3F4248</color>
+    <color name="black_p50">#7f000000</color>
 </resources>

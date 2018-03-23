@@ -10,6 +10,7 @@ import com.carson.quicker.QExecutors;
 
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  * Created by carson on 2018/3/9.
@@ -19,8 +20,9 @@ import java.io.FileWriter;
 
 public class QAppHandler implements Thread.UncaughtExceptionHandler {
     private Application application;
-    private Thread.UncaughtExceptionHandler defaultHandler;
-    private File crashLogPath;
+    private Thread.UncaughtExceptionHandler exceptionHandler;
+    private File baseLogPath;
+    private boolean retry;
 
     private static final class MonitorsHolder {
         private static final QAppHandler MONITORS = new QAppHandler();
@@ -32,21 +34,25 @@ public class QAppHandler implements Thread.UncaughtExceptionHandler {
     }
 
     public void create() {
-        defaultHandler = Thread.getDefaultUncaughtExceptionHandler();
+        exceptionHandler = Thread.getDefaultUncaughtExceptionHandler();
         Thread.setDefaultUncaughtExceptionHandler(this);
         QExecutors.init().threadIO().execute(new Runnable() {
             @Override
             public void run() {
-                crashLogPath = QStorages.getCacheDir(application, "log");
+                baseLogPath = QStorages.getCacheDir(application, "log");
             }
         });
     }
 
-    private void printLogIfDebug(Thread t, Throwable e) {
+    public void destroy() {
+        MonitorsHolder.MONITORS.application = null;
+    }
+
+    private void printLogWithDebug(Thread t, Throwable e) {
         if (QAndroid.isDebug(application)) {
             if (t != null) {
                 StringBuilder builder = new StringBuilder(t.toString());
-                builder.append(" ID = " + t.getId());
+                builder.append(e.getMessage());
                 QLogger.error(builder.toString());
             }
             e.printStackTrace();
@@ -55,8 +61,8 @@ public class QAppHandler implements Thread.UncaughtExceptionHandler {
 
     @Override
     public void uncaughtException(Thread t, Throwable e) {
-        printLogIfDebug(t, e);
-        if (monitorException(t, e)) {
+        printLogWithDebug(t, e);
+        if (processException(t, e)) {
             try {
                 Thread.sleep(1600);
             } catch (InterruptedException e1) {
@@ -64,13 +70,13 @@ public class QAppHandler implements Thread.UncaughtExceptionHandler {
             }
             android.os.Process.killProcess(android.os.Process.myPid());
         } else {
-            if (defaultHandler != null) {
-                defaultHandler.uncaughtException(t, e);
+            if (exceptionHandler != null && retry) {
+                exceptionHandler.uncaughtException(t, e);
             }
         }
     }
 
-    private boolean monitorException(Thread thread, Throwable throwable) {
+    private boolean processException(Thread thread, Throwable throwable) {
         // 使用Toast来显示异常信息
         new Thread() {
             @Override
@@ -82,10 +88,10 @@ public class QAppHandler implements Thread.UncaughtExceptionHandler {
         }.start();
         if (throwable != null) {
             try {
-                File log = new File(this.crashLogPath, "crash.log");
-                if (QStorages.mkdirs(this.crashLogPath)) {
+                File log = new File(this.baseLogPath, "crash.log");
+                if (QStorages.mkdirs(this.baseLogPath)) {
                     FileWriter fw = new FileWriter(log);
-                    fw.write(throwable.toString() + "\r\n");
+                    fw.write(thread.getId() + thread.getName() + ": " + throwable.toString() + "\r\n");
                     StackTraceElement[] stackTrace = throwable.getStackTrace();
                     for (int i = 0; i < stackTrace.length; i++) {
                         if (stackTrace[i].getClassName().contains(application.getPackageName())) {
@@ -94,8 +100,8 @@ public class QAppHandler implements Thread.UncaughtExceptionHandler {
                         }
                     }
                     fw.write("\r\n");
-                    fw.write(Build.MODEL + "\t" + Build.HARDWARE + "\t" + Build.VERSION.RELEASE + "(" + Build.VERSION.SDK_INT
-                            + ")\t" + QAndroid.getVersionName(application) + "-" + QAndroid.getVersionCode(application));
+                    fw.write(Build.MODEL + "\t" + Build.HARDWARE + "\t" + Build.VERSION.RELEASE + ":" + Build.VERSION.SDK_INT +
+                            "\t" + QAndroid.getVersionName(application));
                     fw.flush();
                     fw.close();
                     return true;
@@ -105,5 +111,23 @@ public class QAppHandler implements Thread.UncaughtExceptionHandler {
             }
         }
         return false;
+    }
+
+    public void cacheDebugLog(String message) {
+        try {
+            File dstFile = new File(this.baseLogPath, "debug.log");
+            if (QStorages.mkdirs(dstFile.getParentFile())) {
+                FileWriter fw = new FileWriter(dstFile, true);
+
+                fw.write(QAndroid.getUnixTime("MM-dd HH:mm:ss"));
+                fw.write(": ");
+                fw.write(message);
+                fw.write("\r\n");
+                fw.flush();
+                fw.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

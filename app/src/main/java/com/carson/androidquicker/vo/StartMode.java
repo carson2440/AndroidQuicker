@@ -9,6 +9,6 @@ import android.databinding.ObservableField;
 
 public class StartMode extends ViewModel {
     public final ObservableField<String> message = new ObservableField<>();
-
+    public final ObservableField<String> skip = new ObservableField<>();
 
 }
