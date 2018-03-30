@@ -33,6 +33,7 @@ public class QuickerApplication extends Application {
         initHttpSocket();
     }
 
+
     /**
      * if server surppout cache  with  etag or cachecontrol,cache will work will,otherwise, not work.
      */
