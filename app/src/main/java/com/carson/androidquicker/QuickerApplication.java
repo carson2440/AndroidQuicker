@@ -39,14 +39,19 @@ public class QuickerApplication extends Application {
      */
     private void initHttpSocket() {
 //        Storages.getExternalFilesDir(this, "HttpCache");
+
         Observable.just("HttpCache")
                 .map(s -> new Cache(QStorages.getSDCard(s), 1024 * 1024 * 8))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(cache ->
-                        dataSource = QHttpSocket.load("http://news-at.zhihu.com/api/4/")
-                                .cache(cache)
-                                .create(DataSource.class, BuildConfig.DEBUG)
+                .subscribe(cache -> {
+                            dataSource = QHttpSocket.with("http://news-at.zhihu.com/api/4/")
+                                    .enableCache(cache)
+//                                    .setHttpBuilder(null)
+//                                    .setRetrofitBuilder(null)
+                                    .setDebugMode(true)
+                                    .create(DataSource.class);
+                        }
                 );
     }
 }

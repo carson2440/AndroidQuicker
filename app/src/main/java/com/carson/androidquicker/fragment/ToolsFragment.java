@@ -19,7 +19,7 @@ import com.carson.quicker.view.scroller.PullUpDownLayout;
  * Created by carson on 2018/3/20.
  */
 
-public class ToolsFragment extends Fragment {
+public class  ToolsFragment extends Fragment {
     FragmentToolsBinding binding;
     PullUpDownLayout pullUpDownLayout;
     TextView message;

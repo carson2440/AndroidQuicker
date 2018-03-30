@@ -12,6 +12,7 @@ import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.carson.quicker.codec.QAESCoder;
 import com.carson.quicker.utils.QAndroid;
 
 /**
@@ -31,7 +32,7 @@ public class QShapIndicator extends View implements ViewPager.OnPageChangeListen
     private int countItem = 0;
     private int previouslyActiveItem = 99;
 
-    private float radius = 9f;
+    private float radius;
     private float activeRadius, constantRadius, previousRadius;
 
     private static final float SELECTED_FACTOR = 1.30f;
@@ -47,6 +48,7 @@ public class QShapIndicator extends View implements ViewPager.OnPageChangeListen
 
     public QShapIndicator(Context context, AttributeSet attrs) {
         super(context, attrs);
+        radius = QAndroid.dp2px(context,6);
         fillPaint.setAntiAlias(true);
         fillPaint.setStyle(Paint.Style.FILL);
         fillPaint.setStrokeJoin(Paint.Join.ROUND);
@@ -55,8 +57,8 @@ public class QShapIndicator extends View implements ViewPager.OnPageChangeListen
         }
         strokePaint.setAntiAlias(true);
         strokePaint.setStyle(Paint.Style.STROKE);
-        strokePaint.setStrokeWidth(radius / 10 * 2);
-        activeRadius = (radius / 10) * 6;
+        strokePaint.setStrokeWidth(radius * 0.2f);
+        activeRadius = radius * 0.6f;
         // size of inactive indicator
         constantRadius = activeRadius;
         if (shape == RECTANGLE) {
@@ -181,8 +183,8 @@ public class QShapIndicator extends View implements ViewPager.OnPageChangeListen
     }
 
     public void setRadius(float newRadius) {
-        this.radius = newRadius;
-        activeRadius = (radius / 10) * 6;
+        this.radius = QAndroid.dp2px(getContext(),newRadius);
+        activeRadius = radius  * 0.6f;
         constantRadius = activeRadius;
         this.invalidate();
     }

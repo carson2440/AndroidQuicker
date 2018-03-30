@@ -43,9 +43,12 @@ public class BaseApplication extends Application{
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(cache ->
-                                    dataSource = QHttpSocket.load("http://news-at.zhihu.com/api/4/")
-                                            .cache(cache)
-                                            .create(DataSource.class, BuildConfig.DEBUG)
+                                    dataSource = QHttpSocket.with("http://news-at.zhihu.com/api/4/")
+                                                                        .enableCache(cache)
+                                                                    //  .setHttpBuilder(null)
+                                                                    //  .setRetrofitBuilder(null)
+                                                                        .setDebugMode(true)
+                                                                        .create(DataSource.class);
                             );
                 }
          ...
