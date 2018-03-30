@@ -16,29 +16,34 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    dependencies {
+        implementation fileTree(dir: 'libs', include: ['*.jar'])
+//    testImplementation 'junit:junit:4.12'
+//    androidTestImplementation 'com.android.support.test:runner:1.0.1'
+//    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+        compileOnly getRootProject().ext.dependencies.appcompat_v7
+        compileOnly "com.android.support:recyclerview-v7:${SUPPORT_VERSION}"
+
+        //Retrofit requires at minimum Java 7 or Android 2.3
+        api "com.squareup.retrofit2:converter-gson:${RETROFIT2_VERSION}"
+        api "com.squareup.retrofit2:retrofit:${RETROFIT2_VERSION}"
+        api "com.squareup.retrofit2:adapter-rxjava2:${RETROFIT2_VERSION}"
+        //adapter-rxjava2 dependencies rxjava2: 2.4.0->2.0.0
+        api "io.reactivex.rxjava2:rxandroid:${RX_ANDROID}"
+
+        //Rxjava RxAndroid
+//    compileOnly 'io.reactivex.rxjava2:rxjava:2.1.12'
+//    compileOnly 'io.reactivex.rxjava2:rxandroid:2.0.2'
+
+        // If you want to use Android Lifecycle for providers
+//    compile 'com.trello.rxlifecycle2:rxlifecycle-android-lifecycle:2.2.1'
+
+        // arch.lifecycle
+//  //  implementation "android.arch.lifecycle:runtime:${ARCH_VERSION}"
+//    api "android.arch.lifecycle:extensions:${ARCH_VERSION}"
+//    api "android.arch.lifecycle:common-java8:${ARCH_VERSION}"
+//    annotationProcessor "android.arch.lifecycle:compiler:${ARCH_VERSION}"
+    }
 
 }
 
-dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
-    testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-    compileOnly getRootProject().ext.dependencies.appcompat_v7
-    compileOnly "com.android.support:recyclerview-v7:${SUPPORT_VERSION}"
-
-    //Retrofit requires at minimum Java 7 or Android 2.3
-    api "com.squareup.retrofit2:converter-gson:${RETROFIT2_VERSION}"
-    api "com.squareup.retrofit2:retrofit:${RETROFIT2_VERSION}"
-    api "com.squareup.retrofit2:adapter-rxjava2:${RETROFIT2_VERSION}"
-
-    //Rxjava RxAndroid
-//    api 'io.reactivex.rxjava2:rxjava:2.1.7'
-//    api 'io.reactivex.rxjava2:rxandroid:2.0.1'
-
-    // arch.lifecycle
-//    implementation "android.arch.lifecycle:runtime:${ARCH_VERSION}"
-    api "android.arch.lifecycle:extensions:${ARCH_VERSION}"
-    api "android.arch.lifecycle:common-java8:${ARCH_VERSION}"
-    annotationProcessor "android.arch.lifecycle:compiler:${ARCH_VERSION}"
-}

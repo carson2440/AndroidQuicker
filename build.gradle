@@ -30,8 +30,9 @@ ext {
     SDK_VERSION = 26
     MIN_VERSION = 15
     SUPPORT_VERSION = "26.1.0"
-    ARCH_VERSION = "1.1.0"
-    RETROFIT2_VERSION = "2.3.0"
+    ARCH_VERSION = "1.1.1"
+    RETROFIT2_VERSION = "2.4.0"
+    RX_ANDROID = "2.0.2"
     dependencies = [
             appcompat_v7: 'com.android.support:appcompat-v7:26.1.0',
             design      : 'com.android.support:design:26.1.0'

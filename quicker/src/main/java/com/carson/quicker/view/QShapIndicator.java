@@ -12,6 +12,8 @@ import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.view.View;
 
+import com.carson.quicker.utils.QAndroid;
+
 /**
  * Created by carson2440 on 2018/1/3.
  * may be CIRCLE and RECTANGLE

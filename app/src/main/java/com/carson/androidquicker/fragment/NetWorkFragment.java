@@ -13,6 +13,11 @@ import com.carson.androidquicker.R;
 import com.carson.androidquicker.bean.NewsList;
 import com.carson.androidquicker.databinding.FragmentNetworkBinding;
 import com.carson.quicker.Log.QLogger;
+import com.google.gson.Gson;
+
+import org.json.JSONObject;
+
+import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observer;
 import io.reactivex.Scheduler;
@@ -36,20 +41,23 @@ public class NetWorkFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_network, container, false);
 //        binding.loading.setOnClickListener(view -> startActivity(new Intent(this.getActivity(), SDCardReadOrWriteActivity.class)));
 
-        QuickerApplication.dataSource.getLatestNews().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<NewsList>() {
+        QuickerApplication.dataSource.getLatestNews().delay(5, TimeUnit.SECONDS).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<NewsList>() {
             @Override
             public void onSubscribe(Disposable d) {
+                binding.loading.setVisibility(View.VISIBLE);
                 QLogger.debug("onSubscribe");
             }
 
             @Override
             public void onNext(NewsList newsList) {
-                QLogger.debug("onNext" + newsList);
+                initData(new Gson().toJson(newsList));
+                QLogger.debug("onNext" + new Gson().toJson(newsList));
             }
 
             @Override
             public void onError(Throwable e) {
                 QLogger.debug("Throwable" + e);
+                initData("error:" + e.getMessage());
             }
 
             @Override
@@ -60,5 +68,10 @@ public class NetWorkFragment extends Fragment {
         return binding.getRoot();
     }
 
+
+    private void initData(CharSequence text) {
+        binding.loading.setVisibility(View.GONE);
+        binding.message.setText(text);
+    }
 
 }
