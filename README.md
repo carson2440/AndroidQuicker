@@ -9,6 +9,7 @@ Add dependency to your gradle file:
 ```groovy
 compile 'com.carson.quicker:androiQuicker:1.0.0'
 ```
+**STEP 2**
 
 Add the code where you want to use,such as the application class.
 ``` java
@@ -73,6 +74,7 @@ public interface DataSource {
 }
 
 ```
+**STEP 2**
 
 call class：
 
