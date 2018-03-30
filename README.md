@@ -5,9 +5,19 @@ Usage
 -----
 **STEP 1**
 
+Add the JitPack repository to your build file:
 Add dependency to your gradle file:
 ```groovy
-compile 'com.carson.quicker:androiQuicker:1.0.0'
+allprojects {
+		repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+	}
+```
+
+```groovy
+compile 'com.github.carson2440:AndroidQuicker:1.0.1'
 ```
 **STEP 2**
 
