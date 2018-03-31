@@ -17,7 +17,7 @@ allprojects {
 ```
 
 ```groovy
-compile 'com.github.carson2440:AndroidQuicker:1.0.1'
+compile 'com.github.carson2440:AndroidQuicker:1.0.2'
 ```
 **STEP 2**
 
