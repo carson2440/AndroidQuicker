@@ -40,6 +40,9 @@ public class QHttpSocket {
     private QHttpSocket() {
     }
 
+    /**
+     * @param httpBaseUrl 需要以'/'结尾（need end with '/'）
+     */
     public static QHttpSocket with(String httpBaseUrl) {
         HttpSocketBuilder.INSTANCE.httpBaseUrl = httpBaseUrl;
         return HttpSocketBuilder.INSTANCE;
