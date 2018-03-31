@@ -1,6 +1,7 @@
 package com.carson.androidquicker;
 
 import android.app.Application;
+import android.net.TrafficStats;
 import android.support.v7.app.AppCompatDelegate;
 
 import com.carson.androidquicker.api.DataSource;
@@ -28,6 +29,7 @@ public class QuickerApplication extends Application {
         //support svg vector under android5.0
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
         QAppHandler.with(this).create();
+
         QAndroid.enableStrictMode(this);
         QLogger.init(BuildConfig.DEBUG);
         initHttpSocket();
@@ -49,7 +51,7 @@ public class QuickerApplication extends Application {
                                     .enableCache(cache)
 //                                    .setHttpBuilder(null)
 //                                    .setRetrofitBuilder(null)
-                                    .setDebugMode(true)
+                                    .setDebugMode(false)
                                     .create(DataSource.class);
                         }
                 );
