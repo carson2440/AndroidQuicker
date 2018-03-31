@@ -1,5 +1,7 @@
 package com.carson.quicker.http;
 
+import android.text.TextUtils;
+
 import java.io.EOFException;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -226,29 +228,32 @@ public final class HttpLoggingInterceptor implements Interceptor {
             } else if (bodyEncoded(response.headers())) {
                 logger.log("<-- END HTTP (encoded body omitted)");
             } else {
-                BufferedSource source = responseBody.source();
-                source.request(Long.MAX_VALUE); // Buffer the entire body.
-                Buffer buffer = source.buffer();
 
-                Charset charset = UTF8;
-                MediaType contentType = responseBody.contentType();
-                if (contentType != null) {
-                    charset = contentType.charset(UTF8);
-                }
-
-                if (!isPlaintext(buffer)) {
-                    logger.log("");
-                    logger.log("<-- END HTTP (binary " + buffer.size() + "-byte body omitted)");
-                    return response;
-                }
-
-                if (contentLength != 0) {
-                    logger.log("");
-                    logger.log(buffer.clone().readString(charset));
-                }
-
-                logger.log("<-- END HTTP (" + buffer.size() + "-byte body)");
             }
+        }
+        //上面 else 块代码放到这里执行，打印服务器返回的内容。
+        {
+            BufferedSource source = responseBody.source();
+            source.request(Long.MAX_VALUE); // Buffer the entire body.
+            Buffer buffer = source.buffer();
+
+            Charset charset = UTF8;
+            MediaType contentType = responseBody.contentType();
+            if (contentType != null) {
+                charset = contentType.charset(UTF8);
+            }
+
+            if (!isPlaintext(buffer)) {
+                logger.log("<-- END HTTP (binary " + buffer.size() + "-byte body omitted)");
+                return response;
+            }
+
+            if (contentLength != 0) {
+                logger.log(buffer.clone().readString(charset));
+            }
+
+            logger.log("<-- END HTTP (" + buffer.size() + "-byte body)");
+            logger.log("");
         }
 
         return response;
