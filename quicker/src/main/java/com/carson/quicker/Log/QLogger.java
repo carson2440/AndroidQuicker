@@ -14,7 +14,7 @@ public class QLogger {
     private static final String APP_TAG = "QLogger";
     private static boolean printDebugLog = true;
 
-    public static void setDebugMode(boolean debug) {
+    public static void init(boolean debug) {
         printDebugLog = debug;
     }
 
