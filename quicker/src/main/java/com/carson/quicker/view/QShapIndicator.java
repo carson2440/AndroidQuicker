@@ -48,7 +48,7 @@ public class QShapIndicator extends View implements ViewPager.OnPageChangeListen
 
     public QShapIndicator(Context context, AttributeSet attrs) {
         super(context, attrs);
-        radius = QAndroid.dp2px(context,6);
+        radius = QAndroid.dp2px(context,5);
         fillPaint.setAntiAlias(true);
         fillPaint.setStyle(Paint.Style.FILL);
         fillPaint.setStrokeJoin(Paint.Join.ROUND);
@@ -184,7 +184,7 @@ public class QShapIndicator extends View implements ViewPager.OnPageChangeListen
 
     public void setRadius(float newRadius) {
         this.radius = QAndroid.dp2px(getContext(),newRadius);
-        activeRadius = radius  * 0.6f;
+        activeRadius = radius * 0.6f;
         constantRadius = activeRadius;
         this.invalidate();
     }
