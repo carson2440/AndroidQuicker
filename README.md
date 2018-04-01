@@ -2,9 +2,13 @@
 AndroidQuicker is a powerful & easy to use common library for Android
 
 监控APP运行Crash类：QAppHandler；在Application中oncreate（）方法中加入QAppHandler.with(this).create()开启监控.
+
 日志打印类：QLogger；在Application中onCreate（）方法中加入QLogger.init(BuildConfig.DEBUG);
+
 常用帮助类：在com.carson.quicker.utils空间下。（包含文件，网络，加解密，dp转换，String操作等帮助类）
-网络访问类：QHttpSocket；
+
+网络访问类：QHttpSocket
+
 
 Usage
 -----
