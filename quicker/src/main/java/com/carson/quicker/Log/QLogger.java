@@ -11,11 +11,11 @@ public class QLogger {
      * 在androidstudio3.0.1中,华为android自带Log默认无法输出Log.d(),Log.i(),Log.v().
      * 需要单独设置开启
      */
-    private static final String APP_TAG = "Quicker";
-    private static boolean canPrintLog = false;
+    private static final String APP_TAG = "QLogger";
+    private static boolean printDebugLog = true;
 
-    public static void init(boolean debug) {
-        canPrintLog = debug;
+    public static void setDebugMode(boolean debug) {
+        printDebugLog = debug;
     }
 
     public static void debug(String msg) {
@@ -27,13 +27,13 @@ public class QLogger {
     }
 
     public static void debug(String tag, String msg) {
-        if (canPrintLog) {
+        if (printDebugLog) {
             Log.i(tag, msg);
         }
     }
 
     public static void error(String tag, String msg) {
-        if (canPrintLog) {
+        if (printDebugLog) {
             Log.e(tag, msg);
         }
     }

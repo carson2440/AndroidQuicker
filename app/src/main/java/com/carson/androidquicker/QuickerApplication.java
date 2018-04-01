@@ -28,10 +28,11 @@ public class QuickerApplication extends Application {
         super.onCreate();
         //support svg vector under android5.0
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
-        QAppHandler.with(this).create();
 
+
+        QAppHandler.with(this).create();
         QAndroid.enableStrictMode(this);
-        QLogger.init(BuildConfig.DEBUG);
+        QLogger.setDebugMode(BuildConfig.DEBUG);
         initHttpSocket();
     }
 
@@ -51,7 +52,7 @@ public class QuickerApplication extends Application {
                                     .enableCache(cache)
 //                                    .setHttpBuilder(null)
 //                                    .setRetrofitBuilder(null)
-                                    .setDebugMode(false)
+                                    .setDebugMode(BuildConfig.DEBUG)
                                     .create(DataSource.class);
                         }
                 );
