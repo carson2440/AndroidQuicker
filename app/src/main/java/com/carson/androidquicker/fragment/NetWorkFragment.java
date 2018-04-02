@@ -15,15 +15,11 @@ import com.carson.androidquicker.databinding.FragmentNetworkBinding;
 import com.carson.quicker.Log.QLogger;
 import com.google.gson.Gson;
 
-import org.json.JSONObject;
-
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observer;
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /**

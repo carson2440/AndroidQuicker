@@ -37,4 +37,10 @@ public class QLogger {
             Log.e(tag, msg);
         }
     }
+
+    public static void error(Exception e) {
+        if (e != null) {
+            Log.e(APP_TAG, e.getMessage());
+        }
+    }
 }
