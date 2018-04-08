@@ -18,16 +18,45 @@ android {
     dataBinding {
         enabled = true
     }
+    //代码风格兼容Java1.8版本
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+    //定制输出APK的名字
+    android.applicationVariants.all { variant ->
+        variant.outputs.all {
+            outputFileName = "quicker-${variant.versionName}-${variant.buildType.name}.apk"
         }
     }
+    //指定APP的签名信息
+    signingConfigs {
+        release {
+            storeFile file('E://Android/leng360.keystore')
+            storePassword "leng360"
+            keyAlias "leng360.keystore"
+            keyPassword "leng360"
+        }
+    }
+    //定制正式环境和测试环境的参数输出
+    buildTypes {
+        debug {
+            buildConfigField "String", "API_HOST", "\"https://api.leng360localtest.com/v1000\""
+            buildConfigField "String", "SOC_HOST", "\"wss://platform.leng360localtest.com:9502\""
+            minifyEnabled false
+            manifestPlaceholders = [APP_NAME: "@string/app_name_debug"]
+//            signingConfig signingConfigs.release
+        }
+        release {
+            buildConfigField "String", "API_HOST", "\"https://api.leng360.com/v1000\""
+            buildConfigField "String", "SOC_HOST", "\"wss://platform.leng360.com:9502\""
+            minifyEnabled false
+            manifestPlaceholders = [APP_NAME: "@string/app_name_release"]
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            signingConfig signingConfigs.release
+        }
+    }
+
 }
 
 dependencies {
@@ -47,6 +76,7 @@ dependencies {
     annotationProcessor "android.arch.lifecycle:compiler:${ARCH_VERSION}"
 
     implementation 'com.ashokvarma.android:bottom-navigation-bar:2.0.4'
+    //glide 高版本依賴的库和项目有冲突，不兼容
     implementation 'com.github.bumptech.glide:glide:3.7.0'
 
 }

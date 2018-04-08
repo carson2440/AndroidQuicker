@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">AndroidQuicker</string>
+    <string name="app_name_release">Quicker</string>
+    <string name="app_name_debug">Quicker测试版</string>
 </resources>
