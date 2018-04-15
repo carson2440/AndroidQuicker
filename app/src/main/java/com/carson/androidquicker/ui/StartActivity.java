@@ -46,7 +46,7 @@ public class StartActivity extends QuickerActivity {
 
         boolean result = QStorages.hasSDCardAndPermission(this, 001);
         QLogger.debug("has sdcard permission:" + result);
-        QExecutors.init().threadIO().execute(() -> QLogger.debug("CRC32:" + QAndroid.getDexCrc32(StartActivity.this)));
+        QExecutors.with().threadIO().execute(() -> QLogger.debug("CRC32:" + QAndroid.getDexCrc32(StartActivity.this)));
 
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_start);

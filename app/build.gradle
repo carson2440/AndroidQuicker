@@ -7,7 +7,7 @@ android {
         minSdkVersion MIN_VERSION
         targetSdkVersion rootProject.ext.SDK_VERSION
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         //svg 兼容性设置，需要添加appcompat-v7,Activity需要使用AppCompatActivity.
         //在application中设置AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
