@@ -23,6 +23,7 @@ android {
 //    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
         compileOnly getRootProject().ext.dependencies.appcompat_v7
         compileOnly "com.android.support:recyclerview-v7:${SUPPORT_VERSION}"
+        compileOnly "com.android.support:support-annotations:${SUPPORT_VERSION}"
 
         //Retrofit requires at minimum Java 7 or Android 2.3
         api "com.squareup.retrofit2:converter-gson:${RETROFIT2_VERSION}"
@@ -40,9 +41,9 @@ android {
         api 'com.trello.rxlifecycle2:rxlifecycle-android:2.2.1'
 
         // arch.lifecycle
-//  //  implementation "android.arch.lifecycle:runtime:${ARCH_VERSION}"
-//    api "android.arch.lifecycle:extensions:${ARCH_VERSION}"
-//    api "android.arch.lifecycle:common-java8:${ARCH_VERSION}"
+//        implementation "android.arch.lifecycle:runtime:${ARCH_VERSION}"
+//        implementation "android.arch.lifecycle:extensions:${ARCH、_VERSION}"
+//        api "android.arch.lifecycle:common-java8:${ARCH_VERSION}"
 //    annotationProcessor "android.arch.lifecycle:compiler:${ARCH_VERSION}"
     }
 
