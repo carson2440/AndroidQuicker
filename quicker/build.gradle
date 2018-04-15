@@ -37,6 +37,7 @@ android {
 
         // If you want to use Android Lifecycle for providers
 //    compile 'com.trello.rxlifecycle2:rxlifecycle-android-lifecycle:2.2.1'
+        api 'com.trello.rxlifecycle2:rxlifecycle-android:2.2.1'
 
         // arch.lifecycle
 //  //  implementation "android.arch.lifecycle:runtime:${ARCH_VERSION}"

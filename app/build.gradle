@@ -32,10 +32,10 @@ android {
     //指定APP的签名信息
     signingConfigs {
         release {
-            storeFile file('E://Android/leng360.keystore')
-            storePassword "leng360"
-            keyAlias "leng360.keystore"
-            keyPassword "leng360"
+//            storeFile file('E://Android/leng360.keystore')
+//            storePassword "leng360"
+//            keyAlias "leng360.keystore"
+//            keyPassword "leng360"
         }
     }
     //定制正式环境和测试环境的参数输出

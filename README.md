@@ -5,7 +5,7 @@ AndroidQuicker is a powerful & easy to use common library for Android
 * 日志打印类：QLogger；在Application中onCreate（）方法中加入QLogger.init(BuildConfig.DEBUG);
 * 常用帮助类：在com.carson.quicker.utils空间下。（包含文件，网络，加解密，dp转换，String操作等帮助类）
 * 网络访问类：QHttpSocket
-
+* 使用网络的activity或fragment继承自QuickerActivity或QuickerFragment可以有效避免Rx组建内存泄露；
 
 Usage
 -----
@@ -23,7 +23,7 @@ allprojects {
 ```
 
 ```groovy
-compile 'com.github.carson2440:AndroidQuicker:1.0.2'
+compile 'com.github.carson2440:AndroidQuicker:1.0.3'
 ```
 **STEP 2**
 
@@ -123,6 +123,43 @@ call class：
              }
          });
  ```
+
+ If you use rxlifecycle-components, just extend the appropriate class(such as Subactivity extends QuickerActivity), then use the built-in bindToLifecycle() (or bindUntilEvent()) methods:
+
+
+``` java
+
+myObservable
+    .compose(bindUntilEvent(lifecycle, ActivityEvent.DESTROY))
+    .subscribe();
+
+
+QuickerApplication.dataSource.getLatestNews().delay(5, TimeUnit.SECONDS).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).compose(bindToLifecycle()).subscribe(new Observer<NewsList>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                binding.loading.setVisibility(View.VISIBLE);
+                QLogger.debug("onSubscribe");
+            }
+
+            @Override
+            public void onNext(NewsList newsList) {
+                initData(new Gson().toJson(newsList));
+                QLogger.debug("onNext" + new Gson().toJson(newsList));
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                QLogger.debug("Throwable" + e);
+                initData("error:" + e.getMessage());
+            }
+
+            @Override
+            public void onComplete() {
+                QLogger.debug("onComplete");
+            }
+        });
+
+```
 
 **That is all done!**
 
