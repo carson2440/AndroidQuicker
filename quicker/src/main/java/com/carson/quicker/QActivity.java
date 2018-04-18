@@ -1,5 +1,7 @@
 package com.carson.quicker;
 
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
 import android.support.annotation.CheckResult;
@@ -46,6 +48,10 @@ public class QActivity extends AppCompatActivity implements LifecycleProvider<Ac
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         lifecycleSubject.onNext(ActivityEvent.CREATE);
+        //设置系统底部虚拟导航背景色
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setNavigationBarColor(Color.parseColor("#3F4248"));
+        }
     }
 
     @Override

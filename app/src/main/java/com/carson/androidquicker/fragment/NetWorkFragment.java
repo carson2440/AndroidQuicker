@@ -13,6 +13,7 @@ import com.carson.androidquicker.R;
 import com.carson.androidquicker.bean.NewsList;
 import com.carson.androidquicker.databinding.FragmentNetworkBinding;
 import com.carson.quicker.Log.QLogger;
+import com.carson.quicker.QFragment;
 import com.google.gson.Gson;
 
 import java.util.concurrent.TimeUnit;
@@ -26,7 +27,7 @@ import io.reactivex.schedulers.Schedulers;
  * Created by carson on 2018/3/20.
  */
 
-public class NetWorkFragment extends Fragment {
+public class NetWorkFragment extends QFragment {
 
     FragmentNetworkBinding binding;
 
@@ -37,7 +38,7 @@ public class NetWorkFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_network, container, false);
 //        binding.loading.setOnClickListener(view -> startActivity(new Intent(this.getActivity(), SDCardReadOrWriteActivity.class)));
 
-        QuickerApplication.dataSource.getLatestNews().delay(3, TimeUnit.SECONDS).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(new Observer<NewsList>() {
+        QuickerApplication.dataSource.getLatestNews().delay(3, TimeUnit.SECONDS).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).compose(bindToLifecycle()).subscribe(new Observer<NewsList>() {
             @Override
             public void onSubscribe(Disposable d) {
                 binding.loading.setVisibility(View.VISIBLE);
