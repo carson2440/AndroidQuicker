@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.util.Patterns;
 
 import java.nio.charset.Charset;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -39,6 +40,10 @@ public class QStrings {
      */
     public static boolean isNotBlank(@Nullable CharSequence str) {
         return null != str && str.toString().trim().length() > 0;
+    }
+
+    public static <E> boolean isNotBlank(List<E> list) {
+        return list != null && list.size() > 0;
     }
 
     /**
