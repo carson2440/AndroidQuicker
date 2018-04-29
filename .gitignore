@@ -1,7 +1,7 @@
 build/
 # Android Studio
 *.iml
-.idea
+.idea/*
 .gradle
 gradlew*
 

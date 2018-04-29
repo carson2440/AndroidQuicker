@@ -19,36 +19,28 @@
 
     <data>
 
-        <import type="android.view.View" />
-
         <variable
-            name="isLoading"
-            type="boolean" />
-
-        <variable
-            name="homeViewModel"
-            type="com.carson.androidquicker.vo.HomeMode" />
+            name="news"
+            type="com.carson.androidquicker.bean.News" />
 
     </data>
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
-
-        <ListView
-            android:id="@+id/list_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:minHeight="45dp"
+        android:orientation="vertical"
+        android:padding="6dp">
 
         <TextView
-            android:id="@+id/loading"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/font_white"
-            android:gravity="center"
-            android:text="正在加载中"
+            android:layout_height="wrap_content"
+            android:text="@{news.title}" />
 
-            android:visibility="@{isLoading?View.VISIBLE : View.GONE}" />
-    </FrameLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@{news.date}" />
+
+    </LinearLayout>
 </layout>

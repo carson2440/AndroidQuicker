@@ -3,18 +3,17 @@ package com.carson.androidquicker.fragment;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.carson.androidquicker.QuickerApplication;
 import com.carson.androidquicker.R;
+import com.carson.androidquicker.adapter.NetWorkAdapter;
 import com.carson.androidquicker.bean.NewsList;
 import com.carson.androidquicker.databinding.FragmentNetworkBinding;
 import com.carson.quicker.Log.QLogger;
 import com.carson.quicker.QFragment;
-import com.google.gson.Gson;
 
 import java.util.concurrent.TimeUnit;
 
@@ -30,6 +29,13 @@ import io.reactivex.schedulers.Schedulers;
 public class NetWorkFragment extends QFragment {
 
     FragmentNetworkBinding binding;
+    NetWorkAdapter adapter;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        adapter = new NetWorkAdapter(getActivity());
+    }
 
     @Nullable
     @Override
@@ -37,24 +43,25 @@ public class NetWorkFragment extends QFragment {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_network, container, false);
 //        binding.loading.setOnClickListener(view -> startActivity(new Intent(this.getActivity(), SDCardReadOrWriteActivity.class)));
+        binding.listView.setAdapter(adapter);
 
         QuickerApplication.dataSource.getLatestNews().delay(3, TimeUnit.SECONDS).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).compose(bindToLifecycle()).subscribe(new Observer<NewsList>() {
             @Override
             public void onSubscribe(Disposable d) {
-                binding.loading.setVisibility(View.VISIBLE);
+                binding.setIsLoading(true);
                 QLogger.debug("onSubscribe");
             }
 
             @Override
-            public void onNext(NewsList newsList) {
-                initData(new Gson().toJson(newsList));
-                QLogger.debug("onNext" + new Gson().toJson(newsList));
+            public void onNext(NewsList list) {
+                binding.setIsLoading(false);
+                adapter.setBindData(list.getStories(), true);
             }
 
             @Override
             public void onError(Throwable e) {
+                binding.setIsLoading(true);
                 QLogger.debug("Throwable" + e);
-                initData("error:" + e.getMessage());
             }
 
             @Override
@@ -63,12 +70,6 @@ public class NetWorkFragment extends QFragment {
             }
         });
         return binding.getRoot();
-    }
-
-
-    private void initData(CharSequence text) {
-        binding.loading.setVisibility(View.GONE);
-        binding.message.setText(text);
     }
 
 }

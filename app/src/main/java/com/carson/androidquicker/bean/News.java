@@ -1,17 +1,17 @@
 package com.carson.androidquicker.bean;
 
 import android.os.Parcel;
-import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by carson on 2018/3/9.
  */
 
-public class News implements Parcelable {
+public class News implements Serializable{
     private int type;
     private int id;
     @SerializedName("ga_prefix")
@@ -78,21 +78,21 @@ public class News implements Parcelable {
         isRead = read;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(this.type);
-        dest.writeInt(this.id);
-        dest.writeString(this.prefix);
-        dest.writeString(this.title);
-//        dest.writeString(this.images);
-        dest.writeList(this.images);
-        dest.writeByte(isRead ? (byte) 1 : (byte) 0);
-    }
+//    @Override
+//    public int describeContents() {
+//        return 0;
+//    }
+//
+//    @Override
+//    public void writeToParcel(Parcel dest, int flags) {
+//        dest.writeInt(this.type);
+//        dest.writeInt(this.id);
+//        dest.writeString(this.prefix);
+//        dest.writeString(this.title);
+////        dest.writeString(this.images);
+//        dest.writeList(this.images);
+//        dest.writeByte(isRead ? (byte) 1 : (byte) 0);
+//    }
 
     public News() {
     }
@@ -106,13 +106,13 @@ public class News implements Parcelable {
         this.isRead = in.readByte() != 0;
     }
 
-    public static final Creator<News> CREATOR = new Creator<News>() {
-        public News createFromParcel(Parcel source) {
-            return new News(source);
-        }
-
-        public News[] newArray(int size) {
-            return new News[size];
-        }
-    };
+//    public static final Creator<News> CREATOR = new Creator<News>() {
+//        public News createFromParcel(Parcel source) {
+//            return new News(source);
+//        }
+//
+//        public News[] newArray(int size) {
+//            return new News[size];
+//        }
+//    };
 }
