@@ -42,7 +42,7 @@ android {
 
         // arch.lifecycle
 //        implementation "android.arch.lifecycle:runtime:${ARCH_VERSION}"
-//        implementation "android.arch.lifecycle:extensions:${ARCH、_VERSION}"
+//        implementation "android.arch.lifecycle:extensions:${ARCH_VERSION}"
 //        api "android.arch.lifecycle:common-java8:${ARCH_VERSION}"
 //    annotationProcessor "android.arch.lifecycle:compiler:${ARCH_VERSION}"
     }

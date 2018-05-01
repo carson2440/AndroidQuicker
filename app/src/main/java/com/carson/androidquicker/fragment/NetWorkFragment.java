@@ -45,7 +45,7 @@ public class NetWorkFragment extends QFragment {
 //        binding.loading.setOnClickListener(view -> startActivity(new Intent(this.getActivity(), SDCardReadOrWriteActivity.class)));
         binding.listView.setAdapter(adapter);
 
-        QuickerApplication.dataSource.getLatestNews().delay(3, TimeUnit.SECONDS).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).compose(bindToLifecycle()).subscribe(new Observer<NewsList>() {
+        QuickerApplication.dataSource.getLatestNews().delay(2, TimeUnit.SECONDS).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).compose(bindToLifecycle()).subscribe(new Observer<NewsList>() {
             @Override
             public void onSubscribe(Disposable d) {
                 binding.setIsLoading(true);
