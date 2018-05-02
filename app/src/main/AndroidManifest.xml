@@ -23,6 +23,10 @@
         <activity
             android:name=".ui.HomeActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.ActAboutApp"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.Design.NoActionBar" />
     </application>
 
 </manifest>

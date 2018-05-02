@@ -73,9 +73,9 @@ public class StartActivity extends QuickerActivity {
 
     private void loadAction() {
         Observable.create((ObservableOnSubscribe<Integer>) emitter -> {
-            for (int i = 4; i >= 0; i--) {
+            for (int i = 3; i >= 0; i--) {
                 emitter.onNext(i);
-                Thread.currentThread().sleep(1000);
+                Thread.currentThread().sleep(800);
             }
             emitter.onComplete();
         }).subscribeOn(Schedulers.computation())

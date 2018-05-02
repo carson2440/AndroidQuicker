@@ -11,7 +11,6 @@ import com.carson.quicker.QActivity;
 public abstract class QuickerActivity extends QActivity{
 
 
-
     @Override
     public void onBackPressed() {
         super.onBackPressed();

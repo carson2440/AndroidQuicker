@@ -45,6 +45,7 @@ public class HomeActivity extends QuickerActivity implements BottomNavigationBar
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
         QLogger.debug(getLocalClassName() + "Task ID:" + getTaskId() + " Hash code:" + this.hashCode());
         initBottomBarView(0);
     }
@@ -60,7 +61,7 @@ public class HomeActivity extends QuickerActivity implements BottomNavigationBar
             int uid = appInfo.uid;
 
             Class appOpsClass = null;
-             /* Context.APP_OPS_MANAGER */
+            /* Context.APP_OPS_MANAGER */
             try {
                 appOpsClass = Class.forName(AppOpsManager.class.getName());
                 Method checkOpNoThrowMethod = appOpsClass.getMethod("checkOpNoThrow", Integer.TYPE, Integer.TYPE,
@@ -140,21 +141,21 @@ public class HomeActivity extends QuickerActivity implements BottomNavigationBar
                     homeFragment = new HomeFragment();
                 }
                 transaction.replace(R.id.fragment_container, homeFragment);
-                getSupportActionBar().setTitle("Home");
+//                getSupportActionBar().setTitle("Home");
                 break;
             case 1:
                 if (netWorkFragment == null) {
                     netWorkFragment = new NetWorkFragment();
                 }
                 transaction.replace(R.id.fragment_container, netWorkFragment);
-                getSupportActionBar().setTitle("Network");
+//                getSupportActionBar().setTitle("Network");
                 break;
             case 2:
                 if (toolsFragment == null) {
                     toolsFragment = new ToolsFragment();
                 }
                 transaction.replace(R.id.fragment_container, toolsFragment);
-                getSupportActionBar().setTitle("Tools");
+//                getSupportActionBar().setTitle("Tools");
                 break;
         }
         transaction.commitAllowingStateLoss();
@@ -177,8 +178,13 @@ public class HomeActivity extends QuickerActivity implements BottomNavigationBar
         moreItem = menu.add(Menu.NONE, Menu.FIRST, Menu.FIRST, "白天/夜晚");
         moreItem.setIcon(R.drawable.ic_network_24);
         moreItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+
         moreItem = menu.add(Menu.NONE, Menu.FIRST + 1, Menu.FIRST + 1, "检测通知权限");
         moreItem.setIcon(R.drawable.ic_tools_24);
+        moreItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+
+        moreItem = menu.add(Menu.NONE, Menu.FIRST + 2, Menu.FIRST + 2, "关于APP");
+        moreItem.setIcon(R.drawable.ic_home_24);
         moreItem.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
         return super.onCreateOptionsMenu(menu);
     }
@@ -203,6 +209,9 @@ public class HomeActivity extends QuickerActivity implements BottomNavigationBar
                 } else {
                     showAppDetailIntent();
                 }
+                break;
+            case Menu.FIRST + 2:
+                startActivity(ActAboutApp.class, false);
                 break;
         }
         return super.onOptionsItemSelected(item);
