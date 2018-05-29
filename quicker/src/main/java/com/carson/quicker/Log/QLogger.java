@@ -12,7 +12,7 @@ public class QLogger {
      * 需要单独设置开启
      */
     private static final String APP_TAG = "quicker";
-    private static boolean printDebugLog = true;
+    private static boolean printDebugLog = false;
 
     public static void init(boolean debug) {
         printDebugLog = debug;
