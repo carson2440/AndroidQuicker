@@ -23,7 +23,7 @@ allprojects {
 ```
 
 ```groovy
-compile 'com.github.carson2440:AndroidQuicker:1.0.6'
+implementation 'com.github.carson2440:AndroidQuicker:1.0.6'
 ```
 **STEP 2**
 
