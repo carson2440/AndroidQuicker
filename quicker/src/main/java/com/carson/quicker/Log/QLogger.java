@@ -69,13 +69,13 @@ public final class QLogger {
         StackTraceElement a = element[4];
         String info = String.format("%s:%s [%s] ", a.getFileName(), a.getLineNumber(), Thread.currentThread().getId());
         StringBuilder builder = new StringBuilder();
-        if (info.length() < 40) {
+        if (info.length() < 64) {
             builder.append(info);
-            for (int i = 0; i < 40 - info.length(); i++) {
+            for (int i = 0; i < 64 - info.length(); i++) {
                 builder.append(" ");
             }
         } else {
-            builder.append(info.substring(0, 40));
+            builder.append(info.substring(0, 64));
         }
         return builder.toString();
     }

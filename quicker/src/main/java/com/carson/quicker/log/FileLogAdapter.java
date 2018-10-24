@@ -88,7 +88,7 @@ public class FileLogAdapter implements PrinterAdapter {
             logDir += "/";
         logger.setLevel(getLoggerLevel(logLevel));
 
-        File file = new File(logDir + Utils.getCurrentDate() + ".txt");
+        File file = new File(logDir + Utils.getCurrentDate());
         FileHandler fh;
         try {
             fh = new FileHandler(file.toString(), limit, number, true);
