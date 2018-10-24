@@ -23,7 +23,7 @@ import com.carson.androidquicker.R;
 import com.carson.androidquicker.fragment.HomeFragment;
 import com.carson.androidquicker.fragment.NetWorkFragment;
 import com.carson.androidquicker.fragment.ToolsFragment;
-import com.carson.quicker.Log.QLogger;
+import com.carson.quicker.log.QLogger;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -46,7 +46,7 @@ public class HomeActivity extends QuickerActivity implements BottomNavigationBar
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        QLogger.debug(getLocalClassName() + "Task ID:" + getTaskId() + " Hash code:" + this.hashCode());
+        QLogger.d(getLocalClassName() + "Task ID:" + getTaskId() + " Hash code:" + this.hashCode());
         initBottomBarView(0);
     }
 

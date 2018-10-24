@@ -1,11 +1,10 @@
 package com.carson.androidquicker;
 
 import android.app.Application;
-import android.net.TrafficStats;
 import android.support.v7.app.AppCompatDelegate;
 
 import com.carson.androidquicker.api.DataSource;
-import com.carson.quicker.Log.QLogger;
+import com.carson.quicker.log.QLogger;
 import com.carson.quicker.http.QHttpSocket;
 import com.carson.quicker.utils.QAndroid;
 import com.carson.quicker.utils.QAppHandler;
@@ -29,7 +28,7 @@ public class QuickerApplication extends Application {
         //support svg vector under android5.0
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
 
-        QLogger.init(BuildConfig.DEBUG);
+        QLogger.builder().build();
         QAppHandler.with(this).create();
         QAndroid.enableStrictMode(this);
 
@@ -48,7 +47,7 @@ public class QuickerApplication extends Application {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(cache -> {
-                            dataSource = QHttpSocket.with("http://news-at.zhihu.com/api/4/")
+                            dataSource = QHttpSocket.with("http://news-at.zhihu.com/api2/4/")
                                     .enableCache(cache)
 //                                    .setHttpBuilder(null)
 //                                    .setRetrofitBuilder(null)

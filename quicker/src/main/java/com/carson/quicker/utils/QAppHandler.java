@@ -5,7 +5,7 @@ import android.os.Build;
 import android.os.Looper;
 import android.widget.Toast;
 
-import com.carson.quicker.Log.QLogger;
+import com.carson.quicker.log.QLogger;
 import com.carson.quicker.QExecutors;
 
 import java.io.File;
@@ -48,20 +48,8 @@ public class QAppHandler implements Thread.UncaughtExceptionHandler {
         MonitorsHolder.MONITORS.application = null;
     }
 
-    private void printLogWithDebug(Thread t, Throwable e) {
-        if (QAndroid.isDebug(application)) {
-            if (t != null) {
-                StringBuilder builder = new StringBuilder(t.toString());
-                builder.append(e.getMessage());
-                QLogger.error(builder.toString());
-            }
-            e.printStackTrace();
-        }
-    }
-
     @Override
     public void uncaughtException(Thread t, Throwable e) {
-        printLogWithDebug(t, e);
         if (processException(t, e)) {
             try {
                 Thread.sleep(1600);
@@ -86,6 +74,9 @@ public class QAppHandler implements Thread.UncaughtExceptionHandler {
                 Looper.loop();
             }
         }.start();
+        String mobileInfo = Build.MODEL + "\t" + Build.HARDWARE + "\t" + Build.VERSION.RELEASE + ":" + Build.VERSION.SDK_INT +
+                "\t" + QAndroid.getVersionName(application);
+        QLogger.e(throwable, mobileInfo);
         if (throwable != null) {
             try {
                 File log = new File(this.baseLogPath, "crash.log");
@@ -100,8 +91,7 @@ public class QAppHandler implements Thread.UncaughtExceptionHandler {
                         }
                     }
                     fw.write("\r\n");
-                    fw.write(Build.MODEL + "\t" + Build.HARDWARE + "\t" + Build.VERSION.RELEASE + ":" + Build.VERSION.SDK_INT +
-                            "\t" + QAndroid.getVersionName(application));
+                    fw.write(mobileInfo);
                     fw.flush();
                     fw.close();
                     return true;

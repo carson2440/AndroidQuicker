@@ -12,7 +12,7 @@ import com.carson.androidquicker.R;
 import com.carson.androidquicker.adapter.NetWorkAdapter;
 import com.carson.androidquicker.bean.NewsList;
 import com.carson.androidquicker.databinding.FragmentNetworkBinding;
-import com.carson.quicker.Log.QLogger;
+import com.carson.quicker.log.QLogger;
 import com.carson.quicker.QFragment;
 
 import java.util.concurrent.TimeUnit;
@@ -49,7 +49,7 @@ public class NetWorkFragment extends QFragment {
             @Override
             public void onSubscribe(Disposable d) {
                 binding.setIsLoading(true);
-                QLogger.debug("onSubscribe");
+                QLogger.d("onSubscribe");
             }
 
             @Override
@@ -60,13 +60,13 @@ public class NetWorkFragment extends QFragment {
 
             @Override
             public void onError(Throwable e) {
-                binding.setIsLoading(true);
-                QLogger.debug("Throwable" + e);
+                binding.setIsLoading(false);
+                QLogger.d("Throwable" + e);
             }
 
             @Override
             public void onComplete() {
-                QLogger.debug("onComplete");
+                QLogger.d("onComplete");
             }
         });
         return binding.getRoot();

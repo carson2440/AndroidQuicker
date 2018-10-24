@@ -1,6 +1,6 @@
 package com.carson.quicker.http;
 
-import com.carson.quicker.Log.QLogger;
+import com.carson.quicker.log.QLogger;
 import com.carson.quicker.utils.QStrings;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -63,7 +63,7 @@ public class QHttpSocket {
         if (this.okHttpBuilder == null) {
 
             this.okHttpBuilder = new OkHttpClient.Builder()
-                    .retryOnConnectionFailure(true)
+                    .retryOnConnectionFailure(false)
                     .connectTimeout(TIMEOUT_SO, TimeUnit.SECONDS)
                     .readTimeout(TIMEOUT_IO, TimeUnit.SECONDS);
 
@@ -78,7 +78,7 @@ public class QHttpSocket {
             HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
                 @Override
                 public void log(String message) {
-                    QLogger.debug("okhttp: " + message);
+                    QLogger.v("okhttp", message);
                 }
             });
             interceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);

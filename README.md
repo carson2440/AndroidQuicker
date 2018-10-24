@@ -2,7 +2,7 @@
 AndroidQuicker is a powerful & easy to use common library for Android
 
 * 监控APP运行Crash类：QAppHandler；在Application中oncreate（）方法中加入QAppHandler.with(this).create()开启监控.
-* 日志打印类：QLogger；在Application中onCreate（）方法中加入QLogger.init(BuildConfig.DEBUG);
+* 日志打印类：QLogger；在Application中onCreate（）方法中加入QLogger.builder().build()
 * 常用帮助类：在com.carson.quicker.utils空间下。（包含文件，网络，加解密，dp转换，String操作等帮助类）
 * 网络访问类：QHttpSocket
 * activity或fragment继承自QActivity或QFragment可以有效避免由于使用网络组建导致的内存泄露；
@@ -23,7 +23,7 @@ allprojects {
 ```
 
 ```groovy
-implementation 'com.github.carson2440:AndroidQuicker:1.0.6'
+implementation 'com.github.carson2440:AndroidQuicker:1.1.0'
 ```
 **STEP 2**
 
@@ -36,7 +36,13 @@ public class BaseApplication extends Application{
                 ...
                 QAndroid.enableStrictMode(this);
                 QAppHandler.with(this).create();
-                QLogger.init(BuildConfig.DEBUG);
+                 Logger.builder()
+                               .tag("carson")
+                               .logLevel(Logger.DEBUG)
+                               .logPolicy(2*1024*1024, 2)
+                               .logfile(true, Environment.getExternalStorageDirectory().getPath() + "/download")
+                               .expired(1)
+                               .build();
 
                 initHttpSocket();
                 ...
@@ -102,24 +108,24 @@ call class：
              @Override
              public void onSubscribe(Disposable d) {
                  binding.loading.setVisibility(View.VISIBLE);
-                 QLogger.debug("onSubscribe");
+                 QLogger.d("onSubscribe");
              }
 
              @Override
              public void onNext(NewsList newsList) {
                  initData(new Gson().toJson(newsList));
-                 QLogger.debug("onNext" + new Gson().toJson(newsList));
+                 QLogger.d("onNext" + new Gson().toJson(newsList));
              }
 
              @Override
              public void onError(Throwable e) {
-                 QLogger.debug("Throwable" + e);
+                 QLogger.d("Throwable" + e);
                  initData("error:" + e.getMessage());
              }
 
              @Override
              public void onComplete() {
-                 QLogger.debug("onComplete");
+                 QLogger.d("onComplete");
              }
          });
  ```
@@ -138,13 +144,13 @@ QuickerApplication.dataSource.getLatestNews().delay(5, TimeUnit.SECONDS).subscri
             @Override
             public void onSubscribe(Disposable d) {
                 binding.loading.setVisibility(View.VISIBLE);
-                QLogger.debug("onSubscribe");
+                QLogger.d("onSubscribe");
             }
 
             @Override
             public void onNext(NewsList newsList) {
                 initData(new Gson().toJson(newsList));
-                QLogger.debug("onNext" + new Gson().toJson(newsList));
+                QLogger.d("onNext" + new Gson().toJson(newsList));
             }
 
             @Override
@@ -155,7 +161,7 @@ QuickerApplication.dataSource.getLatestNews().delay(5, TimeUnit.SECONDS).subscri
 
             @Override
             public void onComplete() {
-                QLogger.debug("onComplete");
+                QLogger.d("onComplete");
             }
         });
 

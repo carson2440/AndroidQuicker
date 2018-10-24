@@ -8,15 +8,13 @@ import android.support.annotation.Nullable;
 import android.view.View;
 
 import com.carson.androidquicker.QuickerActivity;
-import com.carson.androidquicker.QuickerApplication;
 import com.carson.androidquicker.R;
 import com.carson.androidquicker.databinding.ActivityStartBinding;
 import com.carson.androidquicker.vo.StartMode;
-import com.carson.quicker.Log.QLogger;
+import com.carson.quicker.log.QLogger;
 import com.carson.quicker.QExecutors;
 import com.carson.quicker.utils.QAndroid;
 import com.carson.quicker.utils.QStorages;
-import com.trello.rxlifecycle2.android.ActivityEvent;
 
 import java.util.concurrent.TimeUnit;
 
@@ -25,7 +23,6 @@ import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 /**
@@ -45,8 +42,8 @@ public class StartActivity extends QuickerActivity {
         }
 
         boolean result = QStorages.hasSDCardAndPermission(this, 001);
-        QLogger.debug("has sdcard permission:" + result);
-        QExecutors.with().threadIO().execute(() -> QLogger.debug("CRC32:" + QAndroid.getDexCrc32(StartActivity.this)));
+        QLogger.d("has sdcard permission:" + result);
+        QExecutors.with().threadIO().execute(() -> QLogger.d("CRC32:" + QAndroid.getDexCrc32(StartActivity.this)));
 
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_start);
@@ -62,9 +59,9 @@ public class StartActivity extends QuickerActivity {
 
         Observable.interval(2, TimeUnit.SECONDS)
                 .doOnDispose(() -> {
-                    QLogger.debug("Unsubscribing subscription from onStart()");
+                    QLogger.d("Unsubscribing subscription from onStart()");
                 }).compose(bindToLifecycle()).subscribe(aLong -> {
-            QLogger.debug("Started in onStart(), running until: " + aLong);
+            QLogger.d("Started in onStart(), running until: " + aLong);
         });
 
         loadAction();
@@ -110,6 +107,6 @@ public class StartActivity extends QuickerActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        QLogger.debug("call ondestroy().");
+        QLogger.d("call ondestroy().");
     }
 }
