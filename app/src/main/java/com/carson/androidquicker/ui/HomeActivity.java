@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -46,8 +47,24 @@ public class HomeActivity extends QuickerActivity implements BottomNavigationBar
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+
+        QLogger.v("tag", "message test %s", "level v");
+        QLogger.verbose("message test level verbose");
+        QLogger.d("tag", "message test %s", "level d");
+        QLogger.debug("message test level debug");
+        QLogger.i("tag", "message test %s", "level i");
+        QLogger.info("message test level info");
+        QLogger.w("tag", "message test %s", "level w");
+        QLogger.warn("message test level warn");
+
+        QLogger.e("tag", "message test %s", "level e");
+        QLogger.error("message test level error");
+
+        QLogger.log(Log.ASSERT, "carson", "this is just message");
+
         QLogger.d(getLocalClassName() + "Task ID:" + getTaskId() + " Hash code:" + this.hashCode());
-        initBottomBarView(0);
+        initBottomBarView(
+                0);
     }
 
 

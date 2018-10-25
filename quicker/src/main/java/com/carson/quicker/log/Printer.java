@@ -32,7 +32,5 @@ public interface Printer {
 
     void f(@Nullable Throwable throwable, @NonNull String message, @Nullable Object... args);
 
-    void json(@Nullable String json);
-
     void log(int priority, @Nullable String tag, @Nullable String message, @Nullable Throwable throwable);
 }

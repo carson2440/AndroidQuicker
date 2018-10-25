@@ -22,7 +22,6 @@ public final class QLogger {
      * 在androidstudio3.0.1中,华为android自带Log默认无法输出Log.d(),Log.i(),Log.v().
      * 需要单独设置开启
      */
-
     public static final int FATAL = Log.ASSERT;
     public static final int ERROR = Log.ERROR;
     public static final int WARN = Log.WARN;
@@ -54,7 +53,7 @@ public final class QLogger {
 
     public static void zipLogs(OnZipListener listener) {
         if (adapter == null) {
-            QLogger.w("skip zip log file , logfile is disable");
+            QLogger.warn("skip zip log file , logfile is disable");
         } else if (listener != null) {
             adapter.zipLogs(listener);
         }
@@ -69,13 +68,14 @@ public final class QLogger {
         StackTraceElement a = element[4];
         String info = String.format("%s:%s [%s] ", a.getFileName(), a.getLineNumber(), Thread.currentThread().getId());
         StringBuilder builder = new StringBuilder();
-        if (info.length() < 64) {
+        short line = 50;
+        if (info.length() < line) {
             builder.append(info);
-            for (int i = 0; i < 64 - info.length(); i++) {
+            for (int i = 0; i < line - info.length(); i++) {
                 builder.append(" ");
             }
         } else {
-            builder.append(info.substring(0, 64));
+            builder.append(info.substring(0, line - 1)).append(" ");
         }
         return builder.toString();
     }
@@ -88,9 +88,9 @@ public final class QLogger {
         }
     }
 
-    public static void v(@NonNull String message, @Nullable Object... args) {
+    public static void verbose(@NonNull String message, @Nullable Object... args) {
         message = getStackTace() + message;
-        printer.v(null, message, args);
+        printer.v(message, args);
     }
 
     public static void v(@Nullable String tag, @NonNull String message, @Nullable Object... args) {
@@ -98,9 +98,9 @@ public final class QLogger {
         printer.v(message, args);
     }
 
-    public static void d(@NonNull String message, @Nullable Object... args) {
+    public static void debug(@NonNull String message, @Nullable Object... args) {
         message = getStackTace() + message;
-        printer.d(null, message, args);
+        printer.d(message, args);
     }
 
     public static void d(@Nullable String tag, @NonNull String message, @Nullable Object... args) {
@@ -117,7 +117,7 @@ public final class QLogger {
         }
     }
 
-    public static void i(@NonNull String message, @Nullable Object... args) {
+    public static void info(@NonNull String message, @Nullable Object... args) {
         message = getStackTace() + message;
         printer.i(message, args);
     }
@@ -127,7 +127,7 @@ public final class QLogger {
         printer.i(message, args);
     }
 
-    public static void w(@NonNull String message, @Nullable Object... args) {
+    public static void warn(@NonNull String message, @Nullable Object... args) {
         message = getStackTace() + message;
         printer.w(message, args);
     }
@@ -138,7 +138,7 @@ public final class QLogger {
     }
 
 
-    public static void e(@NonNull String message, @Nullable Object... args) {
+    public static void error(@NonNull String message, @Nullable Object... args) {
         message = getStackTace() + message;
         printer.e(null, message, args);
     }
@@ -153,11 +153,24 @@ public final class QLogger {
         printer.e(throwable, message, args);
     }
 
-    /**
-     * Formats the given json content and print it
-     */
-    public static void json(@Nullable String json) {
-        printer.json(json);
+    public static void fatal(@NonNull String message, @Nullable Object... args) {
+        message = getStackTace() + message;
+        printer.f(null, message, args);
+    }
+
+    public static void f(@Nullable String tag, @NonNull String message, @Nullable Object... args) {
+        message = getStackTace() + tagFormat(tag, message);
+        printer.f(null, message, args);
+    }
+
+    public static void f(@Nullable Throwable throwable, @NonNull String message, @Nullable Object... args) {
+        message = getStackTace() + message;
+        printer.f(throwable, message, args);
+    }
+
+    public static void log(int priority, String tag, String message) {
+        message = getStackTace() + tagFormat(tag, message);
+        printer.log(priority, tag, message, null);
     }
 
     public static Builder builder() {

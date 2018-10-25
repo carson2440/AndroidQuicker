@@ -164,7 +164,7 @@ public final class Utils {
 
                 long expired = expiredPeriod * 24 * 60 * 60 * 1000L;
                 if ((System.currentTimeMillis() - item.lastModified() > expired) && !item.delete())
-                    QLogger.e("can not delete expired file " + item.getName());
+                    QLogger.error("can not delete expired file " + item.getName());
                 if (item.getName().endsWith(SUFFIX_LOCK) ||
                         item.getName().endsWith(SUFFIX_ZIP))
                     continue;

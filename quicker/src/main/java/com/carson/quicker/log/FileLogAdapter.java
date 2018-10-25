@@ -127,7 +127,7 @@ public class FileLogAdapter implements PrinterAdapter {
                 try {
                     File zipFile = new File(targetZipFileName);
                     if (zipFile.exists() && !zipFile.delete())
-                        QLogger.e("can not delete exist zip file!");
+                        QLogger.error("can not delete exist zip file!");
                     result = Utils.zipFiles(Utils.getSuitableFilesWithClear(logDir, expiredPeriod),
                             zipFile, Utils.getCurrentDate());
                 } catch (Exception e) {

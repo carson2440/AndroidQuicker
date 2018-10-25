@@ -76,37 +76,6 @@ class LoggerPrinter implements Printer {
         log(QLogger.FATAL, throwable, message, args);
     }
 
-    /**
-     * It is used for json pretty print
-     */
-    private static final int JSON_INDENT = 2;
-
-    @Override
-    public void json(@Nullable String json) {
-        if (Utils.isEmpty(json)) {
-            d("QLogger.json(json) Empty/Null json");
-            return;
-        }
-        try {
-            json = json.trim();
-            if (json.startsWith("{")) {
-                JSONObject jsonObject = new JSONObject(json);
-                String message = jsonObject.toString(JSON_INDENT);
-                d(message);
-                return;
-            }
-            if (json.startsWith("[")) {
-                JSONArray jsonArray = new JSONArray(json);
-                String message = jsonArray.toString(JSON_INDENT);
-                d(message);
-                return;
-            }
-            e(null, "Invalid Json");
-        } catch (JSONException e) {
-            e(null, "Invalid Json");
-        }
-    }
-
     @Override
     public void log(int priority, @Nullable String tag, @Nullable String message, @Nullable Throwable throwable) {
         if (Utils.isEmpty(message)) {
