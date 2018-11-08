@@ -4,8 +4,8 @@ import android.app.Application;
 import android.support.v7.app.AppCompatDelegate;
 
 import com.carson.androidquicker.api.DataSource;
-import com.carson.quicker.log.QLogger;
 import com.carson.quicker.http.QHttpSocket;
+import com.carson.quicker.log.QLogger;
 import com.carson.quicker.utils.QAndroid;
 import com.carson.quicker.utils.QAppHandler;
 import com.carson.quicker.utils.QStorages;

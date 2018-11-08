@@ -61,12 +61,9 @@ public class QHttpSocket {
 
     public OkHttpClient.Builder defaultHttpBuilder() {
         if (this.okHttpBuilder == null) {
-
             this.okHttpBuilder = new OkHttpClient.Builder()
-                    .retryOnConnectionFailure(false)
                     .connectTimeout(TIMEOUT_SO, TimeUnit.SECONDS)
                     .readTimeout(TIMEOUT_IO, TimeUnit.SECONDS);
-
         }
 
         if (this.httpCache != null) {
