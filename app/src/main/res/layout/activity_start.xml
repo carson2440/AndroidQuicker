@@ -42,7 +42,7 @@
             android:paddingRight="16dp"
             android:visibility="visible"
             android:text="@{startMode.skip}"
-            android:textColor="@color/button_color" />
+            android:textColor="@color/button_select" />
 
     </RelativeLayout>
 </layout>

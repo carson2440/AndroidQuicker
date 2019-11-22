@@ -6,7 +6,7 @@
     <color name="app_bar">#34373d</color>
     <color name="window_bg">#F4F4F4</color>
 
-    <color name="button_color">#57ABF4</color>
+    <color name="button_select">#57ABF4</color>
     //浅灰(166,166,166)
     <color name="gray_light">#A6A6A6</color>
     <color name="gray_dark">#666666</color>

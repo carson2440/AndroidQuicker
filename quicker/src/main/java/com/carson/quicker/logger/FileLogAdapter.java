@@ -1,11 +1,11 @@
-package com.carson.quicker.log;
+package com.carson.quicker.logger;
 
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.carson.quicker.log.formatter.FileFormatter;
+import com.carson.quicker.logger.formatter.FileFormatter;
 
 import java.io.File;
 import java.io.IOException;

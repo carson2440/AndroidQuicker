@@ -24,7 +24,7 @@ import com.carson.androidquicker.R;
 import com.carson.androidquicker.fragment.HomeFragment;
 import com.carson.androidquicker.fragment.NetWorkFragment;
 import com.carson.androidquicker.fragment.ToolsFragment;
-import com.carson.quicker.log.QLogger;
+import com.carson.quicker.logger.QLogger;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -132,7 +132,7 @@ public class HomeActivity extends QuickerActivity implements BottomNavigationBar
         navigationBar.setBackgroundStyle(BottomNavigationBar.BACKGROUND_STYLE_STATIC);
         navigationBar.setBarBackgroundColor(R.color.black_floating);//背景颜色
         navigationBar.setInActiveColor(R.color.font_white);//未选中时的颜色
-        navigationBar.setActiveColor(R.color.button_color);//选中时的颜色
+        navigationBar.setActiveColor(R.color.button_select);//选中时的颜色
 
         TextBadgeItem badgeItem = new TextBadgeItem();
         badgeItem.setText("99").setHideOnSelect(true);

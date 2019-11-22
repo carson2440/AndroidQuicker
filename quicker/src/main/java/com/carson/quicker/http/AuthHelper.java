@@ -1,4 +1,4 @@
-package com.carson.quicker.http;
+package com.carson.quick.http;
 
 import android.text.TextUtils;
 
@@ -26,20 +26,20 @@ public class AuthHelper {
 
     public static List<AuthScheme> parseWwwAuthenticate(String[] wwwAuths) {
         /*
-		 * WWW-Authenticate = "WWW-Authenticate" ":" 1#challenge
-		 *
-		 * challenge = auth-scheme 1*SP 1#auth-param auth-scheme = token
-		 * auth-param = token "=" ( token | quoted-string )
-		 *
-		 * We call the auth-param tokens: <name>=<value>
-		 *
-		 * token = 1*<any CHAR except CTLs or separators> separators = "(" | ")"
-		 * | "<" | ">" | "@" | "," | ";" | ":" | "\" | <"> | "/" | "[" | "]" |
-		 * "?" | "=" | "{" | "}" | SP | HT
-		 *
-		 * quoted-string = ( <"> *(qdtext | quoted-pair ) <"> ) qdtext = <any
-		 * TEXT except <">> quoted-pair = "\" CHAR
-		 */
+         * WWW-Authenticate = "WWW-Authenticate" ":" 1#challenge
+         *
+         * challenge = auth-scheme 1*SP 1#auth-param auth-scheme = token
+         * auth-param = token "=" ( token | quoted-string )
+         *
+         * We call the auth-param tokens: <name>=<value>
+         *
+         * token = 1*<any CHAR except CTLs or separators> separators = "(" | ")"
+         * | "<" | ">" | "@" | "," | ";" | ":" | "\" | <"> | "/" | "[" | "]" |
+         * "?" | "=" | "{" | "}" | SP | HT
+         *
+         * quoted-string = ( <"> *(qdtext | quoted-pair ) <"> ) qdtext = <any
+         * TEXT except <">> quoted-pair = "\" CHAR
+         */
 
         List<AuthScheme> schemes = new LinkedList<>();
         for (String wwwAuth : wwwAuths) {
@@ -75,13 +75,13 @@ public class AuthHelper {
             if (token.length() != 0)
                 tokens.add(token.toString());
 
-			/*
-			 * Step 2: determine token type after trimming:
-			 * "<authSchemes> <auth-param>" new auth scheme + 1 param
-			 * "<auth-param>" add param to previous auth scheme Take into
-			 * account that the second type may contain quoted spaces. The auth
-			 * scheme name must not contain separators (including quotes).
-			 */
+            /*
+             * Step 2: determine token type after trimming:
+             * "<authSchemes> <auth-param>" new auth scheme + 1 param
+             * "<auth-param>" add param to previous auth scheme Take into
+             * account that the second type may contain quoted spaces. The auth
+             * scheme name must not contain separators (including quotes).
+             */
 //			List<AuthScheme> authSchemes = new LinkedList<>();
 //			List<String> authParams = new LinkedList<>();
             AuthScheme scheme = null;

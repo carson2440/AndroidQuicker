@@ -30,7 +30,7 @@ public abstract class QAdapter<E> extends BaseAdapter {
         if (clearAll) {
             this.listData.clear();
         }
-        if (QStrings.isNotBlank(list)) {
+        if (QStrings.isNotEmpty(list)) {
             listData.addAll(list);
         }
         notifyDataSetChanged();
@@ -44,7 +44,7 @@ public abstract class QAdapter<E> extends BaseAdapter {
 
     @Override
     public E getItem(int position) {
-        return QStrings.isNotBlank(listData) ? listData.get(position) : null;
+        return QStrings.isNotEmpty(listData) ? listData.get(position) : null;
     }
 
     @Override

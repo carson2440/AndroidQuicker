@@ -1,4 +1,4 @@
-package com.carson.quicker.log;
+package com.carson.quicker.logger;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -164,7 +164,7 @@ public final class Utils {
 
                 long expired = expiredPeriod * 24 * 60 * 60 * 1000L;
                 if ((System.currentTimeMillis() - item.lastModified() > expired) && !item.delete())
-                    QLogger.error("can not delete expired file " + item.getName());
+                    com.carson.quicker.logger.QLogger.error("can not delete expired file " + item.getName());
                 if (item.getName().endsWith(SUFFIX_LOCK) ||
                         item.getName().endsWith(SUFFIX_ZIP))
                     continue;

@@ -1,7 +1,7 @@
 package com.carson.quicker.http;
 
-import com.carson.quicker.log.QLogger;
-import com.carson.quicker.utils.QStrings;
+import android.util.Log;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -14,19 +14,16 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * Created by carson on 2018/3/9.
+ * Created by carson on 2019/11/20.
  */
-
 public class QHttpSocket {
-
     private boolean debugMode = false;
 
     //socket connection timeout
     private final long TIMEOUT_SO = 10;
     //socket read or wirte timeout
-    private final long TIMEOUT_IO = 8;
+    private final long TIMEOUT_IO = 15;
 
-    private String httpBaseUrl = QStrings.EMPTY;
     private OkHttpClient okHttpClient;
     private OkHttpClient.Builder okHttpBuilder;
     private Cache httpCache;
@@ -40,11 +37,7 @@ public class QHttpSocket {
     private QHttpSocket() {
     }
 
-    /**
-     * @param httpBaseUrl 需要以'/'结尾（need end with '/'）
-     */
-    public static QHttpSocket with(String httpBaseUrl) {
-        HttpSocketBuilder.INSTANCE.httpBaseUrl = httpBaseUrl;
+    public static QHttpSocket with() {
         return HttpSocketBuilder.INSTANCE;
     }
 
@@ -72,16 +65,15 @@ public class QHttpSocket {
 //        builder.authenticator(new DigestAuthenticator(null, "username", "password"));
 
         if (debugMode) {
-            HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
+            HttpLogInterceptor interceptor = new HttpLogInterceptor(new HttpLogInterceptor.Logger() {
                 @Override
                 public void log(String message) {
-                    QLogger.v("okhttp", message);
+                    Log.v("QHttpSocket", message);
                 }
             });
-            interceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
+            interceptor.setLevel(HttpLogInterceptor.Level.BASIC);
             this.okHttpBuilder.addInterceptor(interceptor);
         }
-
         return this.okHttpBuilder;
     }
 
@@ -91,7 +83,7 @@ public class QHttpSocket {
         return this;
     }
 
-    public Retrofit.Builder defaultRetrofitBuilder() {
+    public Retrofit.Builder getRetrofitBuilder() {
 
         if (this.retrofitBuilder == null) {
             Gson gson;
@@ -122,8 +114,13 @@ public class QHttpSocket {
         return this;
     }
 
-
-    public <T> T create(Class<T> tClass) {
+    /**
+     * @param baseUrl 需要以'/'结尾（need end with '/'）
+     * @param tClass
+     * @param <T>
+     * @return
+     */
+    public <T> T create(String baseUrl, Class<T> tClass) {
         if (okHttpClient == null) {
             synchronized (QHttpSocket.class) {
                 if (okHttpClient == null) {
@@ -131,8 +128,9 @@ public class QHttpSocket {
                 }
             }
         }
-        Retrofit.Builder builder = defaultRetrofitBuilder();
-        builder.baseUrl(this.httpBaseUrl).client(this.okHttpClient);
+        Retrofit.Builder builder = getRetrofitBuilder();
+        builder.baseUrl(baseUrl).client(this.okHttpClient);
         return builder.build().create(tClass);
     }
 }
+

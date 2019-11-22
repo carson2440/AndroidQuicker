@@ -7,7 +7,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.1.2'
+        classpath 'com.android.tools.build:gradle:3.4.1'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -28,14 +28,16 @@ task clean(type: Delete) {
 
 
 ext {
-    SDK_VERSION = 26
-    MIN_VERSION = 15
-    SUPPORT_VERSION = "26.1.0"
-    ARCH_VERSION = "1.1.1"
-    RETROFIT2_VERSION = "2.4.0"
-    RX_ANDROID = "2.0.2"
+    SDK_VERSION = 28
+    MIN_VERSION = 16
+    SUPPORT_VERSION = "28.0.0"
+
+    RX_JAVA2 = "2.6.2"
+    RX_ANDROID = "2.1.1"
+
+//    ARCH_VERSION = "1.1.1"
     dependencies = [
-            appcompat_v7: 'com.android.support:appcompat-v7:26.1.0',
-            design      : 'com.android.support:design:26.1.0'
+            appcompat_v7: 'com.android.support:appcompat-v7:28.0.0',
+            design      : 'com.android.support:design:28.0.0'
     ]
 }

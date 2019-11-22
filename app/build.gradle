@@ -42,14 +42,12 @@ android {
     buildTypes {
         debug {
             buildConfigField "String", "API_HOST", "\"https://api.leng360localtest.com/v1000\""
-            buildConfigField "String", "SOC_HOST", "\"wss://platform.leng360localtest.com:9502\""
             minifyEnabled false
             manifestPlaceholders = [APP_NAME: "@string/app_name_debug"]
 //            signingConfig signingConfigs.release
         }
         release {
             buildConfigField "String", "API_HOST", "\"https://api.leng360.com/v1000\""
-            buildConfigField "String", "SOC_HOST", "\"wss://platform.leng360.com:9502\""
             minifyEnabled false
             manifestPlaceholders = [APP_NAME: "@string/app_name_release"]
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -63,18 +61,14 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.1'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-//    implementation "com.android.support:appcompat-v7:${SUPPORT_VERSION}"
-    implementation getRootProject().ext.dependencies.appcompat_v7
-    implementation getRootProject().ext.dependencies.design
+
+    implementation "com.android.support:appcompat-v7:${SUPPORT_VERSION}"
+    implementation "com.android.support:design:${SUPPORT_VERSION}"
     implementation "com.android.support:recyclerview-v7:${SUPPORT_VERSION}"
     api project(':quicker')
-
-    implementation "android.arch.lifecycle:extensions:${ARCH_VERSION}"
-    implementation "android.arch.lifecycle:common-java8:${ARCH_VERSION}"
-    annotationProcessor "android.arch.lifecycle:compiler:${ARCH_VERSION}"
 
     implementation 'com.ashokvarma.android:bottom-navigation-bar:2.0.4'
     //glide 高版本依賴的库和项目有冲突，不兼容

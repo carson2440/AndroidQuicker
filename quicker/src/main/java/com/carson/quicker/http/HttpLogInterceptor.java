@@ -1,7 +1,5 @@
 package com.carson.quicker.http;
 
-import android.text.TextUtils;
-
 import java.io.EOFException;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -26,7 +24,7 @@ import static okhttp3.internal.platform.Platform.INFO;
  * Created by carson on 2018/3/9.
  */
 
-public final class HttpLoggingInterceptor implements Interceptor {
+public final class HttpLogInterceptor implements Interceptor {
     private static final Charset UTF8 = Charset.forName("UTF-8");
 
     public enum Level {
@@ -101,11 +99,11 @@ public final class HttpLoggingInterceptor implements Interceptor {
         };
     }
 
-    public HttpLoggingInterceptor() {
+    public HttpLogInterceptor() {
         this(Logger.DEFAULT);
     }
 
-    public HttpLoggingInterceptor(Logger logger) {
+    public HttpLogInterceptor(Logger logger) {
         this.logger = logger;
     }
 
@@ -116,7 +114,7 @@ public final class HttpLoggingInterceptor implements Interceptor {
     /**
      * Change the level at which this interceptor logs.
      */
-    public HttpLoggingInterceptor setLevel(Level level) {
+    public HttpLogInterceptor setLevel(Level level) {
         if (level == null) throw new NullPointerException("level == null. Use Level.NONE instead.");
         this.level = level;
         return this;

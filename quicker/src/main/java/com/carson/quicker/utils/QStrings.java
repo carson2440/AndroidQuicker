@@ -1,11 +1,12 @@
 package com.carson.quicker.utils;
 
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Patterns;
 
+import java.lang.reflect.Array;
 import java.nio.charset.Charset;
-import java.util.List;
+import java.util.Collection;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
@@ -16,37 +17,48 @@ public class QStrings {
     public static final Charset UTF_8 = Charset.forName("UTF-8");
     public static final String EMPTY = "";
 
-    public static CharSequence filter(CharSequence text) {
-        if (TextUtils.isEmpty(text)) {
+    public static CharSequence filter(String text) {
+        if (isEmpty(text) || "null".equalsIgnoreCase(text)) {
             return EMPTY;
         } else {
-            return text.toString().trim();
+            return text.trim();
         }
     }
 
-    public static CharSequence filter(CharSequence text, String flag) {
+    public static CharSequence filter(CharSequence text, String replace) {
         if (TextUtils.isEmpty(text)) {
             return EMPTY;
         } else {
-            return text.toString().trim().replaceAll(flag, EMPTY);
+            return text.toString().trim().replaceAll(replace, EMPTY);
         }
     }
 
     /**
      * Returns true if the str is null or zero length.
      *
-     * @param str the CharSequence to be examined
+     * @param obj
      * @return true if str is null or zero length
      */
-    public static boolean isNotBlank(@Nullable CharSequence str) {
-        return null != str && str.toString().trim().length() > 0;
+    public static boolean isEmpty(Object obj) {
+        if (obj == null) {
+            return true;
+        } else if (obj instanceof CharSequence) {
+            return ((CharSequence) obj).length() == 0;
+        } else if (obj.getClass().isArray()) {
+            return Array.getLength(obj) == 0;
+        } else if (obj instanceof Collection) {
+            return ((Collection) obj).isEmpty();
+        } else {
+            return obj instanceof Map ? ((Map) obj).isEmpty() : false;
+        }
     }
 
-    public static <E> boolean isNotBlank(List<E> list) {
-        return list != null && list.size() > 0;
+    public static boolean isNotEmpty(Object obj) {
+        return !isEmpty(obj);
     }
 
     /**
+     * 是否是整数或者小数
      * 正则表达式说明:
      * 匹配前面子表达式零次或一次》?;
      * 匹配前面子表达式零次或多次》*;

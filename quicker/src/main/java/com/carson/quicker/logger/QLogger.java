@@ -1,4 +1,4 @@
-package com.carson.quicker.log;
+package com.carson.quicker.logger;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -7,7 +7,7 @@ import android.util.Log;
 
 import java.io.File;
 
-import static com.carson.quicker.log.Utils.checkNotNull;
+import static com.carson.quicker.logger.Utils.checkNotNull;
 
 /**
  * @author yanxu QQ:981385016

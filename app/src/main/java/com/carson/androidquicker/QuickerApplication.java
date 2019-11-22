@@ -3,12 +3,12 @@ package com.carson.androidquicker;
 import android.app.Application;
 import android.support.v7.app.AppCompatDelegate;
 
-import com.carson.androidquicker.api.DataSource;
+import com.carson.androidquicker.api.DataService;
 import com.carson.quicker.http.QHttpSocket;
-import com.carson.quicker.log.QLogger;
+import com.carson.quicker.logger.QLogger;
 import com.carson.quicker.utils.QAndroid;
 import com.carson.quicker.utils.QAppHandler;
-import com.carson.quicker.utils.QStorages;
+import com.carson.quicker.utils.QStrings;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -20,7 +20,13 @@ import okhttp3.Cache;
  */
 
 public class QuickerApplication extends Application {
-    public static DataSource dataSource;
+
+    static QuickerApplication instance;
+    private DataService dataService;
+
+    public static QuickerApplication getInstance() {
+        return instance;
+    }
 
     @Override
     public void onCreate() {
@@ -33,27 +39,46 @@ public class QuickerApplication extends Application {
         QAndroid.enableStrictMode(this);
 
         initHttpSocket();
+        printAppInfo();
+    }
+
+    private void printAppInfo() {
+        String packageName = getPackageName();
+        String versionName = QAndroid.getVersionName(this);
+        int versionCode = QAndroid.getVersionCode(this);
+
+        QLogger.debug("%s runnin mode with: %s", packageName, QAndroid.isDebug(this));
+        QLogger.debug("version: %s - %s", versionName, versionCode);
     }
 
 
     /**
-     * if server surppout cache  with  etag or cachecontrol,cache will work will,otherwise, not work.
+     * if server surppout cache  with  etag or cachecqontrol,cache will work will,otherwise, not work.
      */
     private void initHttpSocket() {
-//        Storages.getExternalFilesDir(this, "HttpCache");
-
-        Observable.just("HttpCache")
-                .map(s -> new Cache(QStorages.getSDCard(s), 1024 * 1024 * 8))
+        Observable.just("AndroidQuicker")
+                .map(s -> new Cache(QAndroid.getSDCard(s), 1024 * 1024 * 8))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(cache -> {
-                            dataSource = QHttpSocket.with("http://news-at.zhihu.com/api2/4/")
+                            dataService = QHttpSocket.with()
                                     .enableCache(cache)
 //                                    .setHttpBuilder(null)
 //                                    .setRetrofitBuilder(null)
                                     .setDebugMode(BuildConfig.DEBUG)
-                                    .create(DataSource.class);
+                                    .create("http://news-at.zhihu.com/api2/4/", DataService.class);
                         }
                 );
+    }
+
+    public DataService getDataService() {
+        if (QStrings.isEmpty(dataService)) {
+            dataService = QHttpSocket.with()
+                    .setDebugMode(QAndroid.isDebug(this))
+//                    .setHttpBuilder()
+//                    .setRetrofitBuilder()
+                    .create("http://news-at.zhihu.com/api2/4/", DataService.class);
+        }
+        return dataService;
     }
 }

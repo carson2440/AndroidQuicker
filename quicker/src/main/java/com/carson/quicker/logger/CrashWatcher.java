@@ -1,4 +1,4 @@
-package com.carson.quicker.log;
+package com.carson.quicker.logger;
 
 /**
  * @author yanxu QQ:981385016

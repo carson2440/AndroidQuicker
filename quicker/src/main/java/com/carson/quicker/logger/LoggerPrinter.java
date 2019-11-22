@@ -1,16 +1,12 @@
-package com.carson.quicker.log;
+package com.carson.quicker.logger;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.carson.quicker.log.Utils.checkNotNull;
+import static com.carson.quicker.logger.Utils.checkNotNull;
 
 
 /**

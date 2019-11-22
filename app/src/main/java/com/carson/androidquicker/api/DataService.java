@@ -17,7 +17,7 @@ import retrofit2.http.Query;
  * Created by carson on 2018/3/9.
  */
 
-public interface DataSource {
+public interface DataService {
     //    @Headers(RetrofitManager.CACHE_CONTROL_AGE + RetrofitManager.CACHE_STALE_SHORT)
     @GET("stories/latest")
     Observable<NewsList> getLatestNews();

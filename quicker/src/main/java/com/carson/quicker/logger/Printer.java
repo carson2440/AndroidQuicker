@@ -1,4 +1,4 @@
-package com.carson.quicker.log;
+package com.carson.quicker.logger;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;

@@ -1,6 +1,6 @@
-package com.carson.quicker.log.formatter;
+package com.carson.quicker.logger.formatter;
 
-import com.carson.quicker.log.Utils;
+import com.carson.quicker.logger.Utils;
 
 import java.text.MessageFormat;
 import java.util.Date;

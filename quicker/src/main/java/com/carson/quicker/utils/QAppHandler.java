@@ -5,7 +5,7 @@ import android.os.Build;
 import android.os.Looper;
 import android.widget.Toast;
 
-import com.carson.quicker.log.QLogger;
+import com.carson.quicker.logger.QLogger;
 import com.carson.quicker.QExecutors;
 
 import java.io.File;
@@ -39,7 +39,7 @@ public class QAppHandler implements Thread.UncaughtExceptionHandler {
         QExecutors.with().threadIO().execute(new Runnable() {
             @Override
             public void run() {
-                baseLogPath = QStorages.getCacheDir(application, "log");
+                baseLogPath = QAndroid.getCachedir(application, "log");
             }
         });
     }
@@ -80,7 +80,7 @@ public class QAppHandler implements Thread.UncaughtExceptionHandler {
         if (throwable != null) {
             try {
                 File log = new File(this.baseLogPath, "crash.log");
-                if (QStorages.mkdirs(this.baseLogPath)) {
+                if (QFileUtil.mkdirs(this.baseLogPath)) {
                     FileWriter fw = new FileWriter(log);
                     fw.write(thread.getId() + thread.getName() + ": " + throwable.toString() + "\r\n");
                     StackTraceElement[] stackTrace = throwable.getStackTrace();
@@ -106,10 +106,10 @@ public class QAppHandler implements Thread.UncaughtExceptionHandler {
     public void cacheDebugLog(String message) {
         try {
             File dstFile = new File(this.baseLogPath, "debug.log");
-            if (QStorages.mkdirs(dstFile.getParentFile())) {
+            if (QFileUtil.mkdirs(dstFile.getParentFile())) {
                 FileWriter fw = new FileWriter(dstFile, true);
 
-                fw.write(QAndroid.getUnixTime("MM-dd HH:mm:ss"));
+                fw.write(QDateUtil.getDateTime());
                 fw.write(": ");
                 fw.write(message);
                 fw.write("\r\n");

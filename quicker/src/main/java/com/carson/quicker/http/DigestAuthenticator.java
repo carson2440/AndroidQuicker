@@ -1,6 +1,6 @@
-package com.carson.quicker.http;
+package com.carson.quick.http;
 
-import android.support.annotation.NonNull;
+
 import android.text.TextUtils;
 
 import java.io.IOException;
@@ -19,7 +19,7 @@ import okio.Buffer;
 import okio.ByteString;
 
 /**
- * Created by carson on 2018/3/9.
+ * Created by carson on 2019/11/20.
  */
 
 public class DigestAuthenticator implements Authenticator {
@@ -60,8 +60,8 @@ public class DigestAuthenticator implements Authenticator {
         Response priorResponse = response.priorResponse();
         boolean triedBefore = priorResponse != null && priorResponse.request().header(HEADER_AUTHORIZATION) != null;
 
-        AuthHelper.AuthScheme basicAuth = null, digestAuth = null;
-        for (AuthHelper.AuthScheme scheme : AuthHelper
+        com.carson.quick.http.AuthHelper.AuthScheme basicAuth = null, digestAuth = null;
+        for (com.carson.quick.http.AuthHelper.AuthScheme scheme : com.carson.quick.http.AuthHelper
                 .parseWwwAuthenticate(response.headers(HEADER_AUTHENTICATE).toArray(new String[0])))
             if ("Basic".equalsIgnoreCase(scheme.name))
                 basicAuth = scheme;
@@ -97,7 +97,7 @@ public class DigestAuthenticator implements Authenticator {
         return null;
     }
 
-    protected Request authorizationRequest(Request request, AuthHelper.AuthScheme digest) {
+    protected Request authorizationRequest(Request request, com.carson.quick.http.AuthHelper.AuthScheme digest) {
         String realm = digest.params.get("realm"), opaque = digest.params.get("opaque"),
                 nonce = digest.params.get("nonce");
 
@@ -180,7 +180,7 @@ public class DigestAuthenticator implements Authenticator {
         return ByteString.of(data.getBytes()).md5().hex();
     }
 
-    protected String h(@NonNull RequestBody body) throws IOException {
+    protected String h(RequestBody body) throws IOException {
         Buffer buffer = new Buffer();
         body.writeTo(buffer);
         return ByteString.of(buffer.readByteArray()).md5().hex();
