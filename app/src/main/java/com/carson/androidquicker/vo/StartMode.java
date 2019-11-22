@@ -2,6 +2,7 @@ package com.carson.androidquicker.vo;
 
 import android.arch.lifecycle.ViewModel;
 import android.databinding.ObservableField;
+import android.graphics.Bitmap;
 
 /**
  * Created by carson on 2018/3/9.

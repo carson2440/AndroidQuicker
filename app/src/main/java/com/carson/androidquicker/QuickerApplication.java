@@ -33,6 +33,7 @@ public class QuickerApplication extends Application {
         super.onCreate();
         //support svg vector under android5.0
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+        instance = this;
 
         QLogger.builder().build();
         QAppHandler.with(this).create();

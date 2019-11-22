@@ -2,6 +2,7 @@ package com.carson.androidquicker.fragment;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 import com.carson.androidquicker.QuickerApplication;
 import com.carson.androidquicker.R;
 import com.carson.androidquicker.adapter.NetWorkAdapter;
+import com.carson.androidquicker.api.DataService;
 import com.carson.androidquicker.bean.NewsList;
 import com.carson.androidquicker.databinding.FragmentNetworkBinding;
 import com.carson.quicker.logger.QLogger;
@@ -44,8 +46,8 @@ public class NetWorkFragment extends QBaseFragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_network, container, false);
 //        binding.loading.setOnClickListener(view -> startActivity(new Intent(this.getActivity(), SDCardReadOrWriteActivity.class)));
         binding.listView.setAdapter(adapter);
-
-        QuickerApplication.getInstance().getDataService().getLatestNews().delay(1, TimeUnit.SECONDS).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).compose(bindToLifecycle()).subscribe(new Observer<NewsList>() {
+        DataService dataService = QuickerApplication.getInstance().getDataService();
+        dataService.getLatestNews().delay(1, TimeUnit.SECONDS).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).compose(bindToLifecycle()).subscribe(new Observer<NewsList>() {
             @Override
             public void onSubscribe(Disposable d) {
                 binding.setIsLoading(true);

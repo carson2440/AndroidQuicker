@@ -68,7 +68,7 @@ public class QHttpSocket {
             HttpLogInterceptor interceptor = new HttpLogInterceptor(new HttpLogInterceptor.Logger() {
                 @Override
                 public void log(String message) {
-                    Log.v("QHttpSocket", message);
+                    Log.d("QHttpSocket", message);
                 }
             });
             interceptor.setLevel(HttpLogInterceptor.Level.BASIC);

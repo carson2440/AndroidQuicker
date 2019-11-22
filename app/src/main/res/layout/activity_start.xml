@@ -22,8 +22,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="top"
-            android:layout_marginBottom="6dp"
             android:layout_marginTop="70dp"
+            android:layout_marginBottom="6dp"
             android:gravity="center"
             android:minHeight="66dp"
             android:onClick="messageClick"
@@ -40,9 +40,9 @@
             android:gravity="center"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            android:visibility="visible"
             android:text="@{startMode.skip}"
-            android:textColor="@color/button_select" />
+            android:textColor="@color/button_select"
+            android:visibility="visible" />
 
     </RelativeLayout>
 </layout>

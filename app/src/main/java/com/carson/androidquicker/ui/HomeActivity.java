@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -23,9 +25,15 @@ import com.carson.androidquicker.QuickerActivity;
 import com.carson.androidquicker.R;
 import com.carson.androidquicker.fragment.HomeFragment;
 import com.carson.androidquicker.fragment.NetWorkFragment;
+import com.carson.androidquicker.fragment.TestFragment;
 import com.carson.androidquicker.fragment.ToolsFragment;
 import com.carson.quicker.logger.QLogger;
+import com.carson.quicker.utils.QAndroid;
+import com.carson.quicker.utils.QBitmaps;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -41,6 +49,7 @@ public class HomeActivity extends QuickerActivity implements BottomNavigationBar
     HomeFragment homeFragment;
     NetWorkFragment netWorkFragment;
     ToolsFragment toolsFragment;
+    TestFragment testFragment;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,6 +76,33 @@ public class HomeActivity extends QuickerActivity implements BottomNavigationBar
                 0);
     }
 
+    private Bitmap loadAppBitmap() {
+        InputStream inputStream = null;
+        try {
+            inputStream = getAssets().open("image.png");
+            Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+            if (bitmap != null) {
+                bitmap = QBitmaps.compressBitmap(bitmap, 200, true);
+                bitmap = QBitmaps.toRoundCorner(bitmap, QAndroid.dp2px(this, 20));
+
+                File file = new File(QAndroid.getCachedir(this, "image"), "image.png");
+                QBitmaps.saveToFile(bitmap, Bitmap.CompressFormat.JPEG, file);
+                //todo Luban
+            }
+            return bitmap;
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
+    }
 
     private boolean isNotificationEnabled(Context context) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT) {
@@ -139,6 +175,7 @@ public class HomeActivity extends QuickerActivity implements BottomNavigationBar
         navigationBar.addItem(new BottomNavigationItem(R.drawable.ic_home_24, "Home"))
                 .addItem(new BottomNavigationItem(R.drawable.ic_network_24, "NetWork").setBadgeItem(badgeItem))
                 .addItem(new BottomNavigationItem(R.drawable.ic_tools_24, "Tools"))
+                .addItem(new BottomNavigationItem(R.drawable.ic_tools_24, "Test"))
                 .setFirstSelectedPosition(lastSelectedPosition)
                 .initialise();
 
@@ -173,6 +210,12 @@ public class HomeActivity extends QuickerActivity implements BottomNavigationBar
                 }
                 transaction.replace(R.id.fragment_container, toolsFragment);
 //                getSupportActionBar().setTitle("Tools");
+                break;
+            case 3:
+                if (testFragment == null) {
+                    testFragment = new TestFragment();
+                }
+                transaction.replace(R.id.fragment_container, testFragment);
                 break;
         }
         transaction.commitAllowingStateLoss();
