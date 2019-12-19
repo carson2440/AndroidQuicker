@@ -1,7 +1,8 @@
 package com.carson.quicker.codec;
 
-import android.util.Base64;
 
+import com.carson.quicker.logger.QLogger;
+import com.carson.quicker.utils.Base64;
 import com.carson.quicker.utils.QStrings;
 
 import java.io.UnsupportedEncodingException;
@@ -18,8 +19,11 @@ import javax.crypto.spec.SecretKeySpec;
  */
 
 public class QAESCoder {
+
+
     // AESCoder uses CBC and PKCS7Padding，如果使用ECB（电码本）模式，存在加密数据被破解的风险
-    static final String AES_MODE = "AES/CBC/PKCS7Padding";
+    static final String AES_CBC = "AES/CBC/PKCS7Padding";
+    static final String AES_ECB = "AES/ECB/PKCS5Padding";
 
     // AESCoder uses SHA-256 (and so a 256-bit key)
     private static final String HASH_ALGORITHM = "SHA-256";
@@ -64,7 +68,8 @@ public class QAESCoder {
             final SecretKeySpec key = generateKey(password);
             byte[] cipherText = encrypt(key, ivBytes, message.getBytes(QStrings.UTF_8));
             // NO_WRAP is important as was getting \n at the end
-            String encoded = Base64.encodeToString(cipherText, Base64.NO_WRAP);
+            // String encoded = Base64.encodeToString(cipherText, Base64.NO_WRAP);
+            String encoded = Base64.encode(cipherText);
             return encoded;
         } catch (UnsupportedEncodingException e) {
         } catch (GeneralSecurityException e) {
@@ -83,7 +88,7 @@ public class QAESCoder {
      */
     private static byte[] encrypt(final SecretKeySpec key, final byte[] iv, final byte[] message)
             throws GeneralSecurityException {
-        final Cipher cipher = Cipher.getInstance(AES_MODE);
+        final Cipher cipher = Cipher.getInstance(AES_CBC);
         IvParameterSpec ivSpec = new IvParameterSpec(iv);
         cipher.init(Cipher.ENCRYPT_MODE, key, ivSpec);
         byte[] cipherText = cipher.doFinal(message);
@@ -104,7 +109,7 @@ public class QAESCoder {
 
         try {
             final SecretKeySpec key = generateKey(password);
-            byte[] decodedCipherText = Base64.decode(base64EncodedCipherText, Base64.NO_WRAP);
+            byte[] decodedCipherText = Base64.decode(base64EncodedCipherText);
             byte[] decryptedBytes = decrypt(key, ivBytes, decodedCipherText);
             String message = new String(decryptedBytes, QStrings.UTF_8);
             return message;
@@ -128,12 +133,68 @@ public class QAESCoder {
      */
     private static byte[] decrypt(final SecretKeySpec key, final byte[] iv, final byte[] decodedCipherText)
             throws GeneralSecurityException {
-        final Cipher cipher = Cipher.getInstance(AES_MODE);
+        final Cipher cipher = Cipher.getInstance(AES_CBC);
         IvParameterSpec ivSpec = new IvParameterSpec(iv);
         cipher.init(Cipher.DECRYPT_MODE, key, ivSpec);
         byte[] decryptedBytes = cipher.doFinal(decodedCipherText);
 
         return decryptedBytes;
+    }
+
+
+    ////////下面的模式是ECB模式:固定内容加密出来的结果是不改变的
+
+    /*****************************************************
+     * AES加密
+     * @param content 加密内容
+     * @param password 加密密码，由字母或数字组成
+    此方法使用AES-128-ECB加密模式，key需要为16位
+    加密解密key必须相同，如：abcd1234abcd1234
+     * @return 加密密文
+     ****************************************************/
+
+    public static String encodeECB(String password, String content) {
+        if (password == null || "".equals(password)) {
+            return null;
+        }
+        if (password.length() != 16) {
+            QLogger.error("encodeECB password length!=16");
+            return null;
+        }
+        try {
+            byte[] raw = password.getBytes();  //获得密码的字节数组
+            SecretKeySpec skey = new SecretKeySpec(raw, "AES"); //根据密码生成AES密钥
+            Cipher cipher = Cipher.getInstance(AES_ECB);  //根据指定算法ALGORITHM自成密码器
+            cipher.init(Cipher.ENCRYPT_MODE, skey); //初始化密码器，第一个参数为加密(ENCRYPT_MODE)或者解密(DECRYPT_MODE)操作，第二个参数为生成的AES密钥
+            byte[] byte_content = content.getBytes("utf-8"); //获取加密内容的字节数组(设置为utf-8)不然内容中如果有中文和英文混合中文就会解密为乱码
+            byte[] encode_content = cipher.doFinal(byte_content); //密码器加密数据
+            return Base64.encode(encode_content); //将加密后的数据转换为字符串返回
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static String decodeECB(String password, String content) {
+        if (password == null || "".equals(password)) {
+            return null;
+        }
+        if (password.length() != 16) {
+            QLogger.error("decodeECB password length!=16");
+            return null;
+        }
+        try {
+            byte[] raw = password.getBytes();  //获得密码的字节数组
+            SecretKeySpec skey = new SecretKeySpec(raw, "AES"); //根据密码生成AES密钥
+            Cipher cipher = Cipher.getInstance(AES_ECB);  //根据指定算法ALGORITHM自成密码器
+            cipher.init(Cipher.DECRYPT_MODE, skey); //初始化密码器，第一个参数为加密(ENCRYPT_MODE)或者解密(DECRYPT_MODE)操作，第二个参数为生成的AES密钥
+            byte[] encode_content = Base64.decode(content); //把密文字符串转回密文字节数组
+            byte[] byte_content = cipher.doFinal(encode_content); //密码器解密数据
+            return new String(byte_content, "utf-8"); //将解密后的数据转换为字符串返回
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 

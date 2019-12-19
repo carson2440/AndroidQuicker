@@ -12,6 +12,7 @@ import com.carson.androidquicker.R;
 import com.carson.androidquicker.databinding.ActivityStartBinding;
 import com.carson.androidquicker.vo.StartMode;
 import com.carson.quicker.QExecutors;
+import com.carson.quicker.codec.QAESCoder;
 import com.carson.quicker.logger.QLogger;
 import com.carson.quicker.utils.QAndroid;
 
