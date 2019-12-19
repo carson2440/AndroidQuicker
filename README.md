@@ -23,7 +23,7 @@ allprojects {
 ```
 
 ```groovy
-implementation 'com.github.carson2440:AndroidQuicker:1.1.3'
+implementation 'com.github.carson2440:AndroidQuicker:1.2.0'
 ```
 **STEP 2**
 
@@ -36,13 +36,13 @@ public class BaseApplication extends Application{
                 ...
                 QAndroid.enableStrictMode(this);
                 QAppHandler.with(this).create();
-                 Logger.builder()
-                               .tag("carson")
-                               .logLevel(Logger.DEBUG)
-                               .logPolicy(2*1024*1024, 2)
-                               .logfile(true, Environment.getExternalStorageDirectory().getPath() + "/download")
-                               .expired(1)
-                               .build();
+                 QLogger.builder()
+                                .tag("Carson2440")
+                                .logLevel(QLogger.DEBUG)
+                                .logPolicy(2 * 1024 * 1024, 2)
+                                .logfile(true, QAndroid.getSDCard("Carson/log").getPath())
+                                .expired(1)
+                                .build();
 
                 initHttpSocket();
                 ...
@@ -55,14 +55,62 @@ public class BaseApplication extends Application{
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
                             .subscribe(cache ->
-                                    dataSource = QHttpSocket.with("http://news-at.zhihu.com/api/4/")
-                                                                        .enableCache(cache)
-                                                                    //  .setHttpBuilder(null)
-                                                                    //  .setRetrofitBuilder(null)
-                                                                        .setDebugMode(true)
-                                                                        .create(DataSource.class);
+                                    String apiUrl = "http://api.host.com:8080/";
+                                           dataService = QHttpSocket.with()
+                                                   .setDebugMode(QAndroid.isDebug(this))
+                                                   //.enableCache()
+                                                   .setHttpBuilder(getHttpBuilder()) //请求头需要统一设置某些参数
+                                                   .setRetrofitBuilder(getRetrofitBuilder(true))//解析返回内容的控制
+                                                   .create(apiUrl, DataService.class);
                             );
                 }
+                private OkHttpClient.Builder getHttpBuilder() {
+                        HttpLogInterceptor interceptor = new HttpLogInterceptor(new HttpLogInterceptor.Logger() {
+                            @Override
+                            public void log(String message) {
+                                QLogger.debug(message);
+                            }
+                        });
+                        if (BuildConfig.DEBUG) {
+                            interceptor.setLevel(HttpLogInterceptor.Level.BODY);
+                        } else {
+                            interceptor.setLevel(HttpLogInterceptor.Level.NONE);
+                        }
+                        return new OkHttpClient.Builder()
+                                .addInterceptor(interceptor)
+                                .addInterceptor(new Interceptor() {
+                                    @Override
+                                    public Response intercept(Chain chain) throws IOException {
+                                        Request original = chain.request();
+
+                                        Request request = original.newBuilder()
+                                                .header("SP-AUTH", "token")
+                                                .header("isClientPlainText", "true")
+                                                .method(original.method(), original.body())
+                                                .build();
+
+                                        return chain.proceed(request);
+                                    }
+                                })
+                                .connectTimeout(20, TimeUnit.SECONDS)
+                                .readTimeout(30, TimeUnit.SECONDS)
+                                .writeTimeout(30, TimeUnit.SECONDS);
+                    }
+
+                public Retrofit.Builder getRetrofitBuilder(boolean jsonResponse) {
+                        Gson gson = new GsonBuilder().setLenient().setPrettyPrinting().create();
+                        Retrofit.Builder retrofitBuilder = new Retrofit.Builder();
+                        retrofitBuilder.addCallAdapterFactory(RxJava2CallAdapterFactory.create());
+                        if (jsonResponse) {
+                            //返回内容解析成json，统一处理json内容解析
+                            retrofitBuilder.addConverterFactory(HytGsonConverter.create(gson));
+                        } else {
+                            //返回内容解析成string
+                            retrofitBuilder.addConverterFactory(ScalarsConverterFactory.create());
+                        }
+                        //retrofitBuilder.addConverterFactory(GsonConverterFactory.create(gson));
+                        return retrofitBuilder;
+                 }
          ...
 }
 ```

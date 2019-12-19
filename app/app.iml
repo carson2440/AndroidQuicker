@@ -201,5 +201,6 @@
     <orderEntry type="library" name="Gradle: com.trello.rxlifecycle3:rxlifecycle-android:3.1.0@aar" level="project" />
     <orderEntry type="module" module-name="quicker" />
     <orderEntry type="module" module-name="quicker" />
+    <orderEntry type="module" module-name="quicker" />
   </component>
 </module>

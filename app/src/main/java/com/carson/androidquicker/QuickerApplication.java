@@ -36,6 +36,14 @@ public class QuickerApplication extends Application {
         instance = this;
 
         QLogger.builder().build();
+//        QLogger.builder()
+//                .tag("FaceClock")
+//                .logLevel(QLogger.DEBUG)
+//                .logPolicy(2 * 1024 * 1024, 2)
+//                .logfile(true, QAndroid.getSDCard("FaceClock/log").getPath())
+//                .expired(1)
+//                .build();
+
         QAppHandler.with(this).create();
         QAndroid.enableStrictMode(this);
 
